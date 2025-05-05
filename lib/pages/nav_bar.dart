@@ -14,9 +14,9 @@ class NavBar extends StatefulWidget {
 class _MainPageState extends State<NavBar> {
 
   final List<Widget> pages = [
-    const ProfilePage(),
     const DiscoverPage(),
     const MessagePage(),
+    const ProfilePage(),
   ];
 
   int currentPage = 0;
@@ -34,12 +34,6 @@ class _MainPageState extends State<NavBar> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(
-                  Icons.person,
-              ),
-            label: "Profile",
-          ),
-            BottomNavigationBarItem(
-              icon: Icon(
                 Icons.my_library_books,
               ),
               label: "Study Together",
@@ -49,6 +43,12 @@ class _MainPageState extends State<NavBar> {
                 Icons.messenger,
               ),
               label: "Messages",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.person,
+              ),
+              label: "Profile",
             ),
           ],
       ),
