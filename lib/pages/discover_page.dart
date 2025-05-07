@@ -70,7 +70,8 @@ class DiscoverPage extends StatelessWidget {
               const Expanded(
                 child: Center(
                   child: Text(
-                    "More content coming...",
+                    "More content coming soon!!:\nSchool Info\nStudy Focus\nBio",
+                    textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
