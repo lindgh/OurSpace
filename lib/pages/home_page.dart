@@ -5,22 +5,21 @@ import 'logIn_page.dart';
 import 'message_page.dart';
 import 'profile_page.dart';
 
-
-class NavBar extends StatefulWidget {
+class HomePage extends StatefulWidget {
   static route() => MaterialPageRoute(
-    builder: (context) => const NavBar(),
+    builder: (context) => const HomePage(),
   );
-  const NavBar({super.key});
+  const HomePage({super.key});
 
   @override
-  State<NavBar> createState() => _MainPageState();
+  State<HomePage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<NavBar> {
+class _MainPageState extends State<HomePage> {
 
   final List<Widget> pages = [
     const DiscoverPage(),
-    const MessagePage(),
+    MessagePage(),
     const ProfilePage(),
   ];
 
