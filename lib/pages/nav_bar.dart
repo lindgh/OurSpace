@@ -55,20 +55,6 @@ class _MainPageState extends State<NavBar> {
               ),
               label: "Profile",
             ),
-            BottomNavigationBarItem(
-              icon: IconButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.push(context, LoginPage.route());
-                },
-                icon: const Icon(
-                  Icons.ac_unit,
-                )
-              ),
-
-              label: "Log Out",
-
-            ),
           ],
       ),
     );
