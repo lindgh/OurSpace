@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'discover_page.dart';
+import 'logIn_page.dart';
 import 'message_page.dart';
 import 'profile_page.dart';
 
 
 class NavBar extends StatefulWidget {
+  static route() => MaterialPageRoute(
+    builder: (context) => const NavBar(),
+  );
   const NavBar({super.key});
 
   @override
@@ -31,20 +36,20 @@ class _MainPageState extends State<NavBar> {
               currentPage = value;
             });
           },
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            const BottomNavigationBarItem(
               icon: Icon(
                 Icons.my_library_books,
               ),
               label: "Study Together",
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(
                 Icons.messenger,
               ),
               label: "Messages",
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(
                 Icons.person,
               ),

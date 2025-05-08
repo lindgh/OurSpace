@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../pages/nav_bar.dart';
-
-//must include bottom two for firebase
+import '../pages/signUp_page.dart';
+import '../pages/discover_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -24,7 +25,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
       ),
-      home: NavBar(),
+      home: StreamBuilder( //NavBar(),
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot){
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if(snapshot.data != null) {
+            return const NavBar();
+        }
+        return const SignUpPage();
+      }),
     );
   }
 }
