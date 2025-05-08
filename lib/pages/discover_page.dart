@@ -8,9 +8,13 @@ class DiscoverPage extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     //SWIPING DETECTION
-    return Padding(
-      padding: const EdgeInsets.all(8), // <-- adds margin around the card
-      child: GestureDetector(
+    return SafeArea(
+        top: true,
+        bottom: false, // optional: keeps the card overlapping the navbar if desired
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: GestureDetector(
+
         onPanUpdate: (details) {
           if (details.delta.dx > 10) {
             print("Swiped Right");
@@ -36,10 +40,11 @@ class DiscoverPage extends StatelessWidget {
                     fit: StackFit.expand,
                     children: [
                       //STUDENT IMAGE (Aiming for this to be a )
-                      Image.network(
-                        'https://relevantmagazine.com/wp-content/uploads/2025/02/oscarisaacc.jpg',
+                      Image.asset(
+                        'assets/images/placeholder_OI.jpg',
                         fit: BoxFit.cover,
                       ),
+
 
 
                       // NAME AT THE BOTTOM OF THE IMAGE
@@ -80,6 +85,7 @@ class DiscoverPage extends StatelessWidget {
           ),
         ),
       ),
+        ),
     );
   }
 }
