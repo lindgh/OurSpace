@@ -9,20 +9,42 @@ class DiscoverPage extends StatefulWidget {
 
 class _DiscoverPageState extends State<DiscoverPage> {
   String selectedSection = 'School';
-
+// SCHOOL SECTION
   final Map<String, Widget> infoContent = {
     'School': Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Image.asset('assets/images/school_logo.png', height: 60),
-        const SizedBox(height: 12),
+        const SizedBox(height: 24), // ⬅️ More space below the buttons
         const Text(
           'University of California, Riverside',
-          style: TextStyle(fontSize: 18),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
           textAlign: TextAlign.center,
         ),
+        const SizedBox(height: 16), // ⬅️ Space before image
+
+        // FULL-WIDTH IMAGE (NO RADIUS, NO MARGIN)
+        Expanded(
+          child: ClipRRect(
+            borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+            child: Image.asset(
+              'assets/images/placeholder_school_ucr.jpg',
+              fit: BoxFit.cover,
+              width: double.infinity,
+            ),
+          ),
+        ),
+
       ],
     ),
+
+
+
+
+
+
     'Study Focus': Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

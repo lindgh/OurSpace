@@ -90,3 +90,4 @@ flutter:
   # see https://flutter.dev/to/font-from-package
   assets:
     - assets/images/placeholder_OI.jpg
+    - assets/images/placeholder_school_ucr.jpg
