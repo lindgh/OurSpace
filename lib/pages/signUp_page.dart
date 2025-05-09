@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:OurSpace/pages/logIn_page.dart';
-
-import 'nav_bar.dart';
-//import 'logIn_page.dart';
+import '../src/authentication.dart';
 
 class SignUpPage extends StatefulWidget {
   static route() => MaterialPageRoute(
@@ -16,28 +13,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  Future <void> createUserWithEmailAndPassword() async {
-    try {
-      final userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim()
-      );
-      print(userCredential.user?.uid);
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +49,9 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () async {
-                  await createUserWithEmailAndPassword();
-                  Navigator.push(context, NavBar.route());
+                onPressed: ()  {
+                  signup(context);
+
                 },
                 child: const Text(
                   'SIGN UP',
