@@ -8,7 +8,7 @@ class DiscoverPage extends StatefulWidget {
 }
 
 class _DiscoverPageState extends State<DiscoverPage> {
-  String selectedSection = 'School';
+  String selectedSection = 'Study Focus';
 // SCHOOL SECTION
   final Map<String, Widget> infoContent = {
     'School': Column(
@@ -45,20 +45,59 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
 
 
-    'Study Focus': Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          'CS 141 - AI and ML',
-          style: TextStyle(fontSize: 18),
-        ),
-        const SizedBox(height: 12),
-        ElevatedButton(
-          onPressed: () {},
-          child: const Text("View Notes"),
-        ),
-      ],
+    'Study Focus': Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start, // Ensures text is left-aligned
+        children: [
+          const Text(
+            'Computer Science',
+            style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 0),
+          const Text(
+            'Undergrad, fourth year',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Wrap inside a Center to override left alignment
+          Center(
+            child: Wrap(
+              alignment: WrapAlignment.center, // Still center-align pills
+              spacing: 12,
+              runSpacing: 8,
+              children: [
+                _CoursePill(label: 'CS147'),
+                _CoursePill(label: 'CS173'),
+                _CoursePill(label: 'EE120B'),
+                _CoursePill(label: 'MATH009B'),
+                _CoursePill(label: 'EE108'),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          const Text(
+            'Looking for a partner to study for the upcoming CS153 exam!\n\nNow we gotta test to make sure that the text fades to white when there is too much text to fit within the box. This will come up later probably. I fear that the team will not like what I have made, but the only thing I can do is hope for the best.',
+            style: TextStyle(fontSize: 16),
+          ),
+        ],
+      ),
     ),
+
+
+
+
+
+
     'Bio': const Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       child: SingleChildScrollView(
@@ -191,10 +230,30 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
 // DYNAMIC CONTENT BASED ON SELECTED BUTTON
                 Expanded(
-                  child: Center(
-                    child: infoContent[selectedSection]!,
+                  child: Builder(
+                    builder: (context) {
+                      final current = infoContent[selectedSection]!;
+
+                      // Don't wrap School section, it already has full-height content
+                      if (selectedSection == 'School') {
+                        return current;
+                      }
+
+                      // Scrollable content for Study Focus and Bio
+                      return ClipRRect(
+                        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.all(16),
+                          child: current,
+                        ),
+                      );
+                    },
                   ),
                 ),
+
+
+
 
 
               ],
@@ -250,3 +309,29 @@ class _InfoButton extends StatelessWidget {
     );
   }
 }
+
+class _CoursePill extends StatelessWidget {
+  final String label;
+
+  const _CoursePill({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade100,
+        borderRadius: BorderRadius.circular(32),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+}
+
