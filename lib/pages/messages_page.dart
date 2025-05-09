@@ -15,6 +15,9 @@ class MessagePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Your Messages"),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.grey,
+        elevation: 0,
       ),
       body: _buildUserList(),
     );
