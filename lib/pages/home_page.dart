@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'discover_page.dart';
 import 'logIn_page.dart';
-import 'message_page.dart';
+import 'messages_page.dart';
 import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,6 +29,7 @@ class _MainPageState extends State<HomePage> {
     return Scaffold(
       body: pages[currentPage],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.indigo,
         currentIndex: currentPage,
         onTap: (value) {
             setState(() {
@@ -38,7 +39,7 @@ class _MainPageState extends State<HomePage> {
           items: [
             const BottomNavigationBarItem(
               icon: Icon(
-                Icons.my_library_books,
+                Icons.school_sharp,
               ),
               label: "Study Together",
             ),

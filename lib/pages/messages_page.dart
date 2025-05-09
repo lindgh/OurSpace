@@ -39,12 +39,13 @@ class MessagePage extends StatelessWidget {
   }
 
   Widget _buildUserListItem(
-  Map<String, dynamic> userData, BuildContext context) {
+      Map<String, dynamic> userData, BuildContext context) {
     return UserTile(
       text: userData["email"],
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(
           receiverEmail: userData["email"],
+          receiverID: userData["uid"],
         ),
         ),
         );
