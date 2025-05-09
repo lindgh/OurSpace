@@ -2,25 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'discover_page.dart';
 import 'logIn_page.dart';
-import 'message_page.dart';
+import 'messages_page.dart';
 import 'profile_page.dart';
 
-
-class NavBar extends StatefulWidget {
+class HomePage extends StatefulWidget {
   static route() => MaterialPageRoute(
-    builder: (context) => const NavBar(),
+    builder: (context) => const HomePage(),
   );
-  const NavBar({super.key});
+  const HomePage({super.key});
 
   @override
-  State<NavBar> createState() => _MainPageState();
+  State<HomePage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<NavBar> {
+class _MainPageState extends State<HomePage> {
 
   final List<Widget> pages = [
     const DiscoverPage(),
-    const MessagePage(),
+    MessagePage(),
     const ProfilePage(),
   ];
 
@@ -30,6 +29,7 @@ class _MainPageState extends State<NavBar> {
     return Scaffold(
       body: pages[currentPage],
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.indigo,
         currentIndex: currentPage,
         onTap: (value) {
             setState(() {
@@ -39,7 +39,7 @@ class _MainPageState extends State<NavBar> {
           items: [
             const BottomNavigationBarItem(
               icon: Icon(
-                Icons.my_library_books,
+                Icons.school_sharp,
               ),
               label: "Study Together",
             ),
