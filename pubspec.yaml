@@ -93,3 +93,7 @@ flutter:
     - assets/images/placeholder_OI.jpg
     - assets/images/placeholder_OI_pfp.jpg
     - assets/images/placeholder_school_ucr.jpg
+    # pedro
+    - assets/images/placeholder_PP.jpg
+    - assets/images/placeholder_PP_pfp.jpg
+    - assets/images/placeholder_school_ucla.jpg

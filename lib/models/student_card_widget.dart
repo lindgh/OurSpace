@@ -11,7 +11,7 @@ class StudentCardWidget extends StatefulWidget {
 }
 
 class _StudentCardWidgetState extends State<StudentCardWidget> {
-  String selectedSection = 'Study Focus';
+  String selectedSection = 'Study Focus'; // ✅ This should already be true
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
               child: Image.asset(
-                student.headerImagePath,
+                student.schoolImagePath,
                 fit: BoxFit.cover,
                 width: double.infinity,
               ),
