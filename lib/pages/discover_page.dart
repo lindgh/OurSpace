@@ -98,16 +98,68 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
 
 
-    'Bio': const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      child: SingleChildScrollView(
-        child: Text(
-          'Loves group projects, coffee, and study jams. Also a part-time tutor for Data Structures. Enjoys climbing and weekend hackathons.',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16),
-        ),
+    'Bio': Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // PROFILE + NAME/SCHOOL ROW
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CircleAvatar(
+                radius: 40,
+                backgroundImage: AssetImage('assets/images/placeholder_OI_pfp.jpg'),
+              ),
+              const SizedBox(width: 16),
+              Expanded( // ← this allows wrapping instead of overflow
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Oscar Isaac',
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      'University of California, Riverside',
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 24),
+
+          // SOCIAL ICON BUTTONS
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              _SocialIconButton(icon: Icons.link, label: 'LinkedIn'),
+              SizedBox(width: 24), // ⬅️ increased spacing
+              _SocialIconButton(icon: Icons.email, label: 'Email'),
+              SizedBox(width: 24), // ⬅️ increased spacing
+              _SocialIconButton(icon: Icons.share, label: 'Other'),
+            ],
+          ),
+
+          const SizedBox(height: 24),
+
+          // BIO TEXT (LEFT-ALIGNED)
+          const Text(
+            'I love computer science as much as I love acting. '
+                'Feel free to add me on my discord  - linked above ;) <3',
+            textAlign: TextAlign.left,
+            style: TextStyle(fontSize: 16),
+          ),
+        ],
       ),
     ),
+
+
+
   };
 
 
@@ -334,4 +386,36 @@ class _CoursePill extends StatelessWidget {
     );
   }
 }
+
+class _SocialIconButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _SocialIconButton({
+    required this.icon,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.indigoAccent.withOpacity(0.1),
+          ),
+          child: Icon(icon, size: 24, color: Colors.indigo),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 12),
+        ),
+      ],
+    );
+  }
+}
+
 
