@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:OurSpace/pages/signUp_page.dart';
-import 'package:OurSpace/pages/discover_page.dart';
-import 'home_page.dart';
+import '../services/auth/authentication.dart';
+
 
 class LoginPage extends StatefulWidget {
   static route() => MaterialPageRoute(
@@ -16,43 +14,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  Future <void> loginUserWithEmailAndPassword() async {
-    String email = emailController.text.trim();
-
-    try {
-      final userCredential =
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: passwordController.text.trim()
-      );
-
-      // save user info
-      _firestore.collection("Users").doc(userCredential.user!.uid).set(
-        {
-          'uid': userCredential.user!.uid,
-          'email': email,
-        },
-      );
-
-      print(userCredential.user?.uid);
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +50,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () async {
-                  await loginUserWithEmailAndPassword();
-                  Navigator.push(context, HomePage.route());
+                onPressed: ()  {
+                  login(context);
                 },
                 child: const Text(
                   'SIGN IN',

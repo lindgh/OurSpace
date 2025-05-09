@@ -1,3 +1,5 @@
+import 'package:OurSpace/services/auth/authentication.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../services/chat/chat_services.dart';
 import 'package:OurSpace/components/custom_textfield.dart';
@@ -15,7 +17,7 @@ class ChatPage extends StatelessWidget {
   final TextEditingController _messageController = TextEditingController();
 
   final ChatService _chatService = ChatService();
-  // add authentication
+  final authentication _authentication = authentication();
 
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
@@ -43,7 +45,7 @@ class ChatPage extends StatelessWidget {
   }
 
   Widget _buildMessageList() {
-    String senderID = _authService.getCurrentUser()!.uid;
+    String senderID = _authentication.getCurrentUser()!.uid;
     return StreamBuilder(
       stream: _chatService.getMessages(receiverID, senderID),
         builder: (context, snapshot) {

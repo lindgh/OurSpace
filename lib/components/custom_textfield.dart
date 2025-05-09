@@ -22,16 +22,16 @@ class CustomTextField extends StatelessWidget {
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderSide:
-              BorderSide(color: Theme.of(context).colorScheme.tertiary),
+              BorderSide(color: Colors.black),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide:
-            BorderSide(color: Theme.of(context).colorScheme.primary),
+            BorderSide(color: Colors.black),
           ),
-          fillColor: Theme.of(context).colorScheme.secondary,
+          fillColor: Colors.grey,
           filled: true,
           hintText: hintText,
-          hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+          hintStyle: TextStyle(color: Colors.black),
         ),
       ),
     );
