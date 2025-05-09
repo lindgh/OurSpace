@@ -42,12 +42,18 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
         ],
       ),
 
+
+
+
+
+
       'Study Focus': Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Study Focus', style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+
+            Text(student.majorTitle, style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             Wrap(
               alignment: WrapAlignment.center,
@@ -60,6 +66,10 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
           ],
         ),
       ),
+
+
+
+
 
       'Bio': Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),

@@ -97,3 +97,7 @@ flutter:
     - assets/images/placeholder_PP.jpg
     - assets/images/placeholder_PP_pfp.jpg
     - assets/images/placeholder_school_ucla.jpg
+    # luca
+    - assets/images/placeholder_LM.jpg
+    - assets/images/placeholder_LM_pfp.jpg
+    - assets/images/placeholder_school_waterloo.jpg

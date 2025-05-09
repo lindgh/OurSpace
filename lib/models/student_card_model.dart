@@ -1,6 +1,7 @@
 class StudentCard {
   final String name;
   final String school;
+  final String majorTitle;
   final String headerImagePath;
   final String profileImagePath;
   final String schoolImagePath;
@@ -14,6 +15,7 @@ class StudentCard {
     required this.headerImagePath,
     required this.profileImagePath,
     required this.schoolImagePath,
+    required this.majorTitle,
     required this.courses,
     required this.studyFocusText,
     required this.bio,
