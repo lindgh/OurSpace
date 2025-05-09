@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../pages/nav_bar.dart';
+import '../../pages/home_page.dart';
 
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
@@ -9,6 +9,12 @@ final formKey = GlobalKey<FormState>();
 class authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // get current user
+  User? getCurrentUser() {
+    return _auth.currentUser;
+  }
+
+  // log in
   Future <UserCredential> loginUserWithEmailAndPassword(String email, password) async {
     try {
       UserCredential userCredential =
@@ -22,6 +28,7 @@ class authentication {
     }
   }
 
+  // sign up
   Future <UserCredential> signUpUserWithEmailAndPassword(String email, password) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
@@ -40,7 +47,7 @@ void login(BuildContext context) async {
 
   try {
     await authService.loginUserWithEmailAndPassword(emailController.text, passwordController.text);
-    Navigator.push(context, NavBar.route());
+    Navigator.push(context, HomePage.route());
   } catch (e) {
     showDialog(
       context: context,
@@ -56,7 +63,7 @@ void signup(BuildContext context) async {
 
   try {
     await authService.signUpUserWithEmailAndPassword(emailController.text, passwordController.text);
-    Navigator.push(context, NavBar.route());
+    Navigator.push(context, HomePage.route());
   } catch (e) {
     showDialog(
         context: context,
