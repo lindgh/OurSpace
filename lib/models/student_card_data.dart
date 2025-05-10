@@ -23,15 +23,5 @@ final List<StudentCard> studentCards = [
     studyFocusText: "Looking for a project partner to help save the world against Galactus. We are not safe.",
     bio: "I really really hate Tony Stark. Also, I hate Namor.",
   ),
-  StudentCard(
-    name: "Luca Marinelli",
-    school: "University of Waterloo",
-    majorTitle: "Electrical Engineering",
-    headerImagePath: "assets/images/placeholder_LM.jpg",
-    profileImagePath: "assets/images/placeholder_LM_pfp.jpg",
-    schoolImagePath: "assets/images/placeholder_school_waterloo.jpg",
-    courses: ["EE100A", "EE108", "EE120B", "ETST007"],
-    studyFocusText: "My body may be present, but my soul is on the beach. I'm already dead. \n\n Help me with my EE120B project?",
-    bio: "I'm a smuggler.",
-  ),
+
 ];

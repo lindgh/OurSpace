@@ -101,3 +101,15 @@ flutter:
     - assets/images/placeholder_LM.jpg
     - assets/images/placeholder_LM_pfp.jpg
     - assets/images/placeholder_school_waterloo.jpg
+    # david tennant
+    - assets/images/placeholder_DT.jpg
+    - assets/images/placeholder_DT_pfp.jpg
+    - assets/images/placeholder_school_tla.jpg
+    #powder
+    - assets/images/placeholder_P.jpg
+    - assets/images/placeholder_P_pfp.jpg
+    - assets/images/placeholder_school_zaun.jpg
+    #meg
+    - assets/images/placeholder_meg.jpg
+    - assets/images/placeholder_meg_pfp.jpg
+    - assets/images/placeholder_school_texas.jpg
