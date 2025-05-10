@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../pages/home_page.dart';
@@ -8,6 +9,7 @@ final formKey = GlobalKey<FormState>();
 
 class authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // get current user
   User? getCurrentUser() {
@@ -22,6 +24,14 @@ class authentication {
           email: email,
           password: password,
       );
+
+      _firestore.collection("ChatClient").doc(userCredential.user!.uid).set(
+          {
+            'uid': userCredential.user!.uid,
+            'email': email,
+          }
+      );
+
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
@@ -35,6 +45,14 @@ class authentication {
           email: email,
           password: password
       );
+
+      _firestore.collection("ChatClient").doc(userCredential.user!.uid).set(
+          {
+            'uid': userCredential.user!.uid,
+            'email': email,
+          }
+      );
+
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
