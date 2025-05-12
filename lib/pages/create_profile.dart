@@ -1,9 +1,15 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'nav_bar.dart';
+import 'home_page.dart';
+
 
 class CreateProfilePage extends StatefulWidget {
+  static route() => MaterialPageRoute(
+    builder: (context) => const CreateProfilePage(),
+  );
   const CreateProfilePage({super.key});
 
   @override
@@ -17,15 +23,29 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
   final collegeController = TextEditingController();
   final majorController = TextEditingController();
 
-  void uploadUserInfo() {
+  void uploadUserInfo() async {
     //if all fields contain info, then we can upload
+    // final String currentUserID = FirebaseAuth.instance.currentUser!.uid;
+    // final String currentUserEmail = FirebaseAuth.instance.currentUser!.email!;
+
     if ((nameController.text.isNotEmpty) && (majorController.text.isNotEmpty) &&
         (collegeController.text.isNotEmpty)) {
       FirebaseFirestore.instance.collection("Users").add({
+        // 'Email': currentUserEmail,
+        // 'uid': currentUserID,
         'Name': nameController.text,
         'Major': majorController.text,
-        'College': collegeController.text
+        'College': collegeController.text,
       });
+      // CollectionReference collection = FirebaseFirestore.instance.collection("Users");
+      // //await FirebaseFirestore.instance.collection("Users").doc('${currentUserID}');
+      // collection.doc('${currentUserID}').set({
+      //   'Email': currentUserEmail,
+      //   'uid': currentUserID,
+      //   'Name': nameController.text,
+      //   'Major': majorController.text,
+      //   'College': collegeController.text,
+      // }, SetOptions());
     }
   }
 
@@ -93,10 +113,10 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                 uploadUserInfo();
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NavBar()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               },
-              child: const Text('Continue'),
+              child: const Text('Finish'),
             ),
           ),
         ],

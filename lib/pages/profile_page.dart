@@ -21,15 +21,16 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(title: const Text('Profile Page')),
         backgroundColor: Colors.green,
         body: Center(
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CreateProfilePage()),
-              );
-            },
-            child: const Text('Create your profile'),
-          ),
+          child: const Text('Profile Page'),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => const CreateProfilePage()),
+          //     );
+          //   },
+          //   child: const Text('Create your profile'),
+          // ),
         ),
 
     ); //scaffold
