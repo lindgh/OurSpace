@@ -1,13 +1,14 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-
 import '../models/student_card_widget.dart';
 import '../models/student_card_data.dart';
 import '../models/student_card_model.dart'; // <-- your StudentCard class
 
-
-class DiscoverPage extends StatefulWidget {
+class DiscoverPage extends StatelessWidget {
+  static route() => MaterialPageRoute(
+    builder: (context) => const DiscoverPage(),
+  );
   const DiscoverPage({super.key});
 
   @override
