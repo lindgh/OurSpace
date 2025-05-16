@@ -5,7 +5,7 @@ import '../models/student_card_widget.dart';
 import '../models/student_card_data.dart';
 import '../models/student_card_model.dart'; // <-- your StudentCard class
 
-class DiscoverPage extends StatelessWidget {
+class DiscoverPage extends StatefulWidget {
   static route() => MaterialPageRoute(
     builder: (context) => const DiscoverPage(),
   );
