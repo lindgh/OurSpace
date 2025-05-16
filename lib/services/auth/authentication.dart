@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../pages/home_page.dart';
+import '../../pages/create_profile.dart';
 
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
@@ -81,7 +82,7 @@ void signup(BuildContext context) async {
 
   try {
     await authService.signUpUserWithEmailAndPassword(emailController.text, passwordController.text);
-    Navigator.push(context, HomePage.route());
+    Navigator.push(context, CreateProfilePage.route());
   } catch (e) {
     showDialog(
         context: context,
