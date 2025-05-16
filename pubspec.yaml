@@ -35,9 +35,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   firebase_core: ^3.13.0
+  flutter_card_swiper: ^2.0.4
   firebase_auth: ^5.5.0
   cloud_firestore: ^5.6.7
-
   intl: ^0.20.2
   image_picker: ^1.1.2
   dotted_border: ^2.1.0
@@ -95,3 +95,27 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+  assets:
+    - assets/images/placeholder_OI.jpg
+    - assets/images/placeholder_OI_pfp.jpg
+    - assets/images/placeholder_school_ucr.jpg
+    # pedro
+    - assets/images/placeholder_PP.jpg
+    - assets/images/placeholder_PP_pfp.jpg
+    - assets/images/placeholder_school_ucla.jpg
+    # luca
+    - assets/images/placeholder_LM.jpg
+    - assets/images/placeholder_LM_pfp.jpg
+    - assets/images/placeholder_school_waterloo.jpg
+    # david tennant
+    - assets/images/placeholder_DT.jpg
+    - assets/images/placeholder_DT_pfp.jpg
+    - assets/images/placeholder_school_tla.jpg
+    #powder
+    - assets/images/placeholder_P.jpg
+    - assets/images/placeholder_P_pfp.jpg
+    - assets/images/placeholder_school_zaun.jpg
+    #meg
+    - assets/images/placeholder_meg.jpg
+    - assets/images/placeholder_meg_pfp.jpg
+    - assets/images/placeholder_school_texas.jpg
