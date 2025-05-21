@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../pages/home_page.dart';
 
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
@@ -57,37 +56,5 @@ class authentication {
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
     }
-  }
-}
-
-void login(BuildContext context) async {
-  final authService = authentication();
-
-  try {
-    await authService.loginUserWithEmailAndPassword(emailController.text, passwordController.text);
-    Navigator.push(context, HomePage.route());
-  } catch (e) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(e.toString()),
-      )
-    );
-  }
-}
-
-void signup(BuildContext context) async {
-  final authService = authentication();
-
-  try {
-    await authService.signUpUserWithEmailAndPassword(emailController.text, passwordController.text);
-    Navigator.push(context, HomePage.route());
-  } catch (e) {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(e.toString()),
-        )
-    );
   }
 }

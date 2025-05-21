@@ -1,90 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:OurSpace/pages/signUp_page.dart';
+import 'package:flutter_login/flutter_login.dart';
 import '../services/auth/authentication.dart';
+import 'package:OurSpace/pages/navigation_bar.dart';
 
+class LoginSignUpPage extends StatelessWidget {
+  LoginSignUpPage({super.key});
 
-class LoginPage extends StatefulWidget {
-  static route() => MaterialPageRoute(
-    builder: (context) => const LoginPage(),
-  );
-  const LoginPage({super.key});
+  final authService = authentication();
+  Duration get loadingTime => const Duration(milliseconds: 2000);
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
+  Future<String?> _authUser(LoginData data) {
+    return Future.delayed(loadingTime).then((_) async {
+      try {
+        await authService.loginUserWithEmailAndPassword(data.name, data.password);
+      } catch (e) {
+        return "Invalid username or password!";
+      }
+    });
+  }
 
-class _LoginPageState extends State<LoginPage> {
+  Future<String?> _signupUser(SignupData data) {
+    return Future.delayed(loadingTime).then((_) async {
+      try {
+        await authService.signUpUserWithEmailAndPassword(data.name!, data.password!);
+      } catch (e) {
+        if (e.toString() == "Exception: weak-password") {
+          return "Password is too weak!";
+        }
+        else {
+          return e.toString();
+        }
+      }
+    });
+  }
+
+  Future<String?> _recoverPassword(String data) {
+    // DUMMY FUNCTION -> TO SATISFY REQUIRED PARAMETER
+    return Future.delayed(loadingTime).then((value) => null);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Form(
-          key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Sign In.',
-                style: TextStyle(
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 30),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  hintText: 'Email',
-                ),
-              ),
-              const SizedBox(height: 15),
-              TextFormField(
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  hintText: 'Password',
-                ),
-                obscureText: true,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: ()  {
-                  login(context);
-                },
-                child: const Text(
-                  'SIGN IN',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context, SignUpPage.route());
-                },
-                child: RichText(
-                  text: TextSpan(
-                    text: 'Don\'t have an account? ',
-                    style: Theme.of(context).textTheme.titleMedium,
-                    children: [
-                      TextSpan(
-                        text: 'Sign Up',
-                        style:
-                        Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+      body: FlutterLogin(
+        //title: 'OurSpace',
+        logo: "assets/images/OurSpace.png",
+        theme: LoginTheme(
+          logoWidth: 1,
         ),
+        onSignup: _signupUser,
+        onLogin: _authUser,
+        onRecoverPassword: _recoverPassword, //dummy function, not used
+        hideForgotPasswordButton: true,
+        loginAfterSignUp: true,
+        onSubmitAnimationCompleted: () {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const NavBar(),
+          ));
+        },
       ),
     );
   }
