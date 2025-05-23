@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../pages/home_page.dart';
 import '../../pages/create_profile.dart';
+import '../../pages/home_page.dart';
+import '../../pages/logIn_page.dart';
 
 final TextEditingController emailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
@@ -10,7 +10,6 @@ final formKey = GlobalKey<FormState>();
 
 class authentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // get current user
   User? getCurrentUser() {
@@ -25,14 +24,6 @@ class authentication {
           email: email,
           password: password,
       );
-
-      _firestore.collection("ChatClient").doc(userCredential.user!.uid).set(
-          {
-            'uid': userCredential.user!.uid,
-            'email': email,
-          }
-      );
-
       return userCredential;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
@@ -46,15 +37,15 @@ class authentication {
           email: email,
           password: password
       );
-
-      _firestore.collection("ChatClient").doc(userCredential.user!.uid).set(
-          {
-            'uid': userCredential.user!.uid,
-            'email': email,
-          }
-      );
-
       return userCredential;
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.code);
+    }
+  }
+
+  Future <void> logoutOfAccount() async {
+    try {
+      await _auth.signOut();
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
     }
@@ -66,7 +57,8 @@ void login(BuildContext context) async {
 
   try {
     await authService.loginUserWithEmailAndPassword(emailController.text, passwordController.text);
-    Navigator.push(context, HomePage.route());
+    Navigator.popUntil(context, ((route) => route.isFirst));
+    Navigator.pushReplacement(context, HomePage.route());
   } catch (e) {
     showDialog(
       context: context,
@@ -82,13 +74,31 @@ void signup(BuildContext context) async {
 
   try {
     await authService.signUpUserWithEmailAndPassword(emailController.text, passwordController.text);
-    Navigator.push(context, CreateProfilePage.route());
+    Navigator.popUntil(context, ((route) => route.isFirst));
+    Navigator.pushReplacement(context, CreateProfilePage.route());
   } catch (e) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Text(e.toString()),
         )
+    );
+  }
+}
+
+void signOut(BuildContext context) async {
+  final authService = authentication();
+  try {
+    await authService.logoutOfAccount();
+    Navigator.popUntil(context, ((route) => route.isFirst));
+    Navigator.pushReplacement(context, LoginPage.route());
+  } catch (e) {
+    showDialog(
+        context: context,
+        builder: (context) =>
+            AlertDialog(
+              title: Text(e.toString()),
+            )
     );
   }
 }

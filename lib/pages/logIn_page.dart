@@ -64,7 +64,8 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(context, SignUpPage.route());
+                  Navigator.popUntil(context, ((route) => route.isFirst));
+                  Navigator.pushReplacement(context, SignUpPage.route());
                 },
                 child: RichText(
                   text: TextSpan(
