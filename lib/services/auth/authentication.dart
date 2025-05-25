@@ -1,3 +1,4 @@
+import 'package:OurSpace/pages/logIn_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -68,5 +69,32 @@ class authentication {
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
     }
+  }
+
+  Future <void> logoutOfAccount() async {
+    try {
+      await _auth.signOut();
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.code);
+    }
+  }
+}
+
+void signOut(BuildContext context) async {
+  final authService = authentication();
+  try {
+    await authService.logoutOfAccount();
+    Navigator.popUntil(context, ((route) => route.isFirst));
+    MaterialPageRoute(
+      builder: (context) => LoginSignUpPage(),
+    );
+  } catch (e) {
+    showDialog(
+        context: context,
+        builder: (context) =>
+            AlertDialog(
+              title: Text(e.toString()),
+            )
+    );
   }
 }

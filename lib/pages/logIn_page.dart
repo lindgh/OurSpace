@@ -56,6 +56,7 @@ class LoginSignUpPage extends StatelessWidget {
         hideForgotPasswordButton: true,
         loginAfterSignUp: true,
         onSubmitAnimationCompleted: () {
+          Navigator.popUntil(context, ((route) => route.isFirst));
           Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => const UserGate(),
           ));
