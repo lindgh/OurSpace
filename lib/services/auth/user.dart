@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class User {
+class UserData {
   final String UserUID;
   final String UserEmail;
 
@@ -10,7 +10,7 @@ class User {
   final String? UserMajor; // change to int?
   final String? UserCollege; // change to int?
 
-  User({
+  UserData({
     required this.UserUID,
     required this.UserEmail,
     required this.UserName,
@@ -18,9 +18,9 @@ class User {
     required this.UserCollege,
   });
 
-  factory User.fromFirestore(DocumentSnapshot doc) {
+  factory UserData.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-    return User(
+    return UserData(
       UserUID: data['uid'],
       UserEmail: data['Email'],
       UserName: data['Name'],
@@ -29,7 +29,7 @@ class User {
     );
   }
 
-  static Future<User?> fetchCurrentUser() async {
+  static Future<UserData?> fetchCurrentUser() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) return null;
@@ -41,7 +41,7 @@ class User {
 
       if (!doc.exists) return null;
 
-      return User.fromFirestore(doc);
+      return UserData.fromFirestore(doc);
     } catch (e) {
       print('Error: $e');
       return null;
