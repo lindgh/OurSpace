@@ -109,10 +109,9 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
               ),
               onPressed: () {
                 uploadUserInfo();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const NavBar()),
-                );
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => NavBar(),
+                    ));
               },
               child: const Text('Finish'),
             ),

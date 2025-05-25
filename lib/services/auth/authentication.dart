@@ -84,9 +84,9 @@ void signOut(BuildContext context) async {
   final authService = authentication();
   try {
     await authService.logoutOfAccount();
-    Navigator.popUntil(context, ((route) => route.isFirst));
-    MaterialPageRoute(
-      builder: (context) => LoginSignUpPage(),
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => LoginSignUpPage()),
+          (route) => false,
     );
   } catch (e) {
     showDialog(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import '../services/auth/auth_gate.dart';
 import '../services/auth/authentication.dart';
-import '../services/auth/user_gate.dart';
 
 class LoginSignUpPage extends StatelessWidget {
   LoginSignUpPage({super.key});
@@ -58,7 +58,7 @@ class LoginSignUpPage extends StatelessWidget {
         onSubmitAnimationCompleted: () {
           Navigator.popUntil(context, ((route) => route.isFirst));
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => const UserGate(),
+            builder: (context) => const AuthGate(),
           ));
         },
       ),
