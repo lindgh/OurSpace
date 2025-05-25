@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import '../services/auth/authentication.dart';
-import 'package:OurSpace/pages/navigation_bar.dart';
+import '../services/auth/user_gate.dart';
 
 class LoginSignUpPage extends StatelessWidget {
   LoginSignUpPage({super.key});
@@ -12,7 +12,8 @@ class LoginSignUpPage extends StatelessWidget {
   Future<String?> _authUser(LoginData data) {
     return Future.delayed(loadingTime).then((_) async {
       try {
-        await authService.loginUserWithEmailAndPassword(data.name, data.password);
+        await authService.loginUserWithEmailAndPassword(
+            data.name, data.password);
       } catch (e) {
         return "Invalid username or password!";
       }
@@ -22,7 +23,8 @@ class LoginSignUpPage extends StatelessWidget {
   Future<String?> _signupUser(SignupData data) {
     return Future.delayed(loadingTime).then((_) async {
       try {
-        await authService.signUpUserWithEmailAndPassword(data.name!, data.password!);
+        await authService.signUpUserWithEmailAndPassword(
+            data.name!, data.password!);
       } catch (e) {
         if (e.toString() == "Exception: weak-password") {
           return "Password is too weak!";
@@ -55,7 +57,7 @@ class LoginSignUpPage extends StatelessWidget {
         loginAfterSignUp: true,
         onSubmitAnimationCompleted: () {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => const NavBar(),
+            builder: (context) => const UserGate(),
           ));
         },
       ),

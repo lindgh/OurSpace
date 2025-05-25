@@ -1,0 +1,50 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+class User {
+  final String UserUID;
+  final String UserEmail;
+
+  // these must all be nullable (have a ?)
+  final String? UserName;
+  final String? UserMajor; // change to int?
+  final String? UserCollege; // change to int?
+
+  User({
+    required this.UserUID,
+    required this.UserEmail,
+    required this.UserName,
+    required this.UserMajor,
+    required this.UserCollege,
+  });
+
+  factory User.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return User(
+      UserUID: data['uid'],
+      UserEmail: data['Email'],
+      UserName: data['Name'],
+      UserMajor: data['Major'],
+      UserCollege: data['College'],
+    );
+  }
+
+  static Future<User?> fetchCurrentUser() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return null;
+
+      final doc = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .get();
+
+      if (!doc.exists) return null;
+
+      return User.fromFirestore(doc);
+    } catch (e) {
+      print('Error: $e');
+      return null;
+    }
+  }
+}

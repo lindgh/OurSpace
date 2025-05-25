@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +27,10 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
     if ((nameController.text.isNotEmpty) && (majorController.text.isNotEmpty) &&
         (collegeController.text.isNotEmpty)) {
-      FirebaseFirestore.instance.collection("Users").add({
-        // 'Email': currentUserEmail,
-        // 'uid': currentUserID,
+
+      // this needs to be update, not add - emily ( i changed it )
+      FirebaseFirestore.instance.collection("Users").doc(currentUser!.uid).update( {
+
         'Name': nameController.text,
         'Major': majorController.text,
         'College': collegeController.text,

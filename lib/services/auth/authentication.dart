@@ -24,6 +24,7 @@ class authentication {
           password: password,
       );
 
+      // messages
       _firestore.collection("ChatClient").doc(userCredential.user!.uid).set(
           {
             'uid': userCredential.user!.uid,
@@ -45,10 +46,21 @@ class authentication {
           password: password
       );
 
+      // messages
       _firestore.collection("ChatClient").doc(userCredential.user!.uid).set(
           {
             'uid': userCredential.user!.uid,
             'email': email,
+          }
+      );
+
+      _firestore.collection("Users").doc(userCredential.user!.uid).set(
+          {
+            'uid': userCredential.user!.uid,
+            'Email': email,
+            'Name': null,
+            'Major': null,
+            'College': null,
           }
       );
 
