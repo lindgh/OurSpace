@@ -9,6 +9,7 @@ class UserData {
   final String? UserName;
   final String? UserMajor; // change to int?
   final String? UserCollege; // change to int?
+  final String? UserBiography;
 
   UserData({
     required this.UserUID,
@@ -16,6 +17,7 @@ class UserData {
     required this.UserName,
     required this.UserMajor,
     required this.UserCollege,
+    required this.UserBiography,
   });
 
   factory UserData.fromFirestore(DocumentSnapshot doc) {
@@ -26,6 +28,7 @@ class UserData {
       UserName: data['Name'],
       UserMajor: data['Major'],
       UserCollege: data['College'],
+      UserBiography: data['Biography'],
     );
   }
 
