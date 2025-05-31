@@ -18,7 +18,7 @@ class NavBar extends StatefulWidget {
 class _MainPageState extends State<NavBar> {
 
   final List<Widget> pages = [
-    const DiscoverPage(),
+    DiscoverPage(),
     MessagePage(),
     const ProfilePage(),
   ];

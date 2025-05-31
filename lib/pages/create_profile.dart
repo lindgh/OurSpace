@@ -19,6 +19,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
   final nameController = TextEditingController();
   final collegeController = TextEditingController();
   final majorController = TextEditingController();
+  final graduationYearController = TextEditingController();
 
   void uploadUserInfo() async {
     //if all fields contain info, then we can upload
@@ -26,14 +27,15 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     // final String currentUserEmail = FirebaseAuth.instance.currentUser!.email!;
 
     if ((nameController.text.isNotEmpty) && (majorController.text.isNotEmpty) &&
-        (collegeController.text.isNotEmpty)) {
+        (collegeController.text.isNotEmpty) && (graduationYearController.text.isNotEmpty)) {
 
       // this needs to be update, not add - emily ( i changed it )
-      FirebaseFirestore.instance.collection("Users").doc(currentUser!.uid).update( {
+      FirebaseFirestore.instance.collection("TestUsers").doc(currentUser!.uid).update( {
 
         'Name': nameController.text,
         'Major': majorController.text,
         'College': collegeController.text,
+        'GraduationYear': graduationYearController.text,
       });
       // CollectionReference collection = FirebaseFirestore.instance.collection("Users");
       // //await FirebaseFirestore.instance.collection("Users").doc('${currentUserID}');
@@ -90,6 +92,17 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                   controller: collegeController,
                   decoration: InputDecoration(
                     labelText: 'College',
+                    border: UnderlineInputBorder(),
+                    //contentPadding: EdgeInsets.only(top: 40.0, bottom: 10.0),
+                  ),
+                ),
+
+                SizedBox(width: 30.0, height: 30.0), //this puts space btwn major & college box
+
+                TextField( //THIS DISPLAYS COLLEGE TEXT FIELD!
+                  controller: graduationYearController,
+                  decoration: InputDecoration(
+                    labelText: 'Graduation Year',
                     border: UnderlineInputBorder(),
                     //contentPadding: EdgeInsets.only(top: 40.0, bottom: 10.0),
                   ),

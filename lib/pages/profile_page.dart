@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/auth/authentication.dart';
 import '../services/auth/user.dart';
-import 'create_profile.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -18,7 +17,15 @@ class ProfilePage extends StatelessWidget {
           return const Center(child: Text("Error loading user data"));
         }
         else if (!snapshot.hasData) {
-          return const Center(child: Text("No user data found"));
+          //return const Center(child: Text("No user data found"));
+          return Center(child:
+            ElevatedButton(
+              onPressed: () {
+                signOut(context);
+              },
+              child: const Text('Logout'),
+            ),
+          );
         }
 
         final user = snapshot.data!;
@@ -50,6 +57,10 @@ class ProfilePage extends StatelessWidget {
                 ),
                 Text(
                   "Your College: ${user.UserCollege}",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+                Text(
+                  "Your Graduation Year: ${user.UserGraduationYear}",
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 const SizedBox(height: 20), // spacing between text and button

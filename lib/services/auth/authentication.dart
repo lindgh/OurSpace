@@ -55,13 +55,14 @@ class authentication {
           }
       );
 
-      _firestore.collection("Users").doc(userCredential.user!.uid).set(
+      _firestore.collection("TestUsers").doc(userCredential.user!.uid).set(
           {
             'uid': userCredential.user!.uid,
             'Email': email,
             'Name': null,
             'Major': null,
             'College': null,
+            'GraduationYear': null,
           }
       );
 
