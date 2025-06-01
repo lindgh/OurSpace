@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -10,6 +12,7 @@ class UserData {
   final String? UserMajor; // change to int?
   final String? UserCollege; // change to int?
   final String? UserBiography;
+  final Uint8List? UserProfilePicture;
 
   UserData({
     required this.UserUID,
@@ -18,6 +21,7 @@ class UserData {
     required this.UserMajor,
     required this.UserCollege,
     required this.UserBiography,
+    required this.UserProfilePicture,
   });
 
   factory UserData.fromFirestore(DocumentSnapshot doc) {
@@ -29,6 +33,7 @@ class UserData {
       UserMajor: data['Major'],
       UserCollege: data['College'],
       UserBiography: data['Biography'],
+      UserProfilePicture: data['Profile Picture'],
     );
   }
 

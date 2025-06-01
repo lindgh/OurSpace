@@ -1,9 +1,8 @@
 //import 'dart:nativewrappers/_internal/vm/lib/typed_data_patch.dart';
+import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:OurSpace/models/pickImage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:OurSpace/models/pickImage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -11,6 +10,7 @@ import 'navigation_bar.dart';
 import '../components/majors.dart';
 import '../components/colleges.dart';
 import '../models/pickImage.dart';
+import '../services/upload/add_data.dart';
 
 class CreateProfilePage extends StatefulWidget {
   static route() => MaterialPageRoute(
@@ -24,7 +24,6 @@ class CreateProfilePage extends StatefulWidget {
 
 class _CreateProfilePageState extends State<CreateProfilePage> {
 
-  final currentUser = FirebaseAuth.instance.currentUser;
   final nameController = TextEditingController();
   final collegeController = TextEditingController();
   final majorController = TextEditingController();
@@ -39,19 +38,13 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
   }
 
   void uploadUserInfo() async {
-    //if all fields contain info, then we can upload
-
-    if ((nameController.text.isNotEmpty) && (majorController.text.isNotEmpty) &&
-        (collegeController.text.isNotEmpty)) {
-
-      // this needs to be update, not add - emily ( i changed it )
-      FirebaseFirestore.instance.collection("Users").doc(currentUser!.uid).update( {
-        'Name': nameController.text,
-        'Major': majorController.text,
-        'College': collegeController.text,
-        'Biography': bioController.text,
-      });
-    }
+    String response = await StoreData().saveData(
+        name: nameController.text,
+        major: majorController.text,
+        college: collegeController.text,
+        biography: bioController.text,
+        file: _userImage!
+    );
   }
 
   @override
