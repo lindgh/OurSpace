@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'student_card_model.dart'; // The StudentCard data class
+import 'student_card_model.dart';
 
 class StudentCardWidget extends StatefulWidget {
   final StudentCard student;
@@ -12,7 +12,6 @@ class StudentCardWidget extends StatefulWidget {
 
 class _StudentCardWidgetState extends State<StudentCardWidget> {
   double _startX = 0.0;
-
   String selectedSection = 'Study Focus';
 
   @override
@@ -49,10 +48,7 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-
             Text(student.UserMajor, style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-
             const SizedBox(height: 16),
             Wrap(
               alignment: WrapAlignment.center,
@@ -109,30 +105,34 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
       ),
     };
 
-    return Card(
-      elevation: 8,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Column(
-        children: [
-          SizedBox(
-            height: screenHeight * 0.33,
-            width: double.infinity,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(student.headerImagePath, fit: BoxFit.cover),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(12),
-                      color: Colors.black.withOpacity(0.3),
-                      child: Text(
-                        student.UserName,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+    return Stack(
+      children: [
+        Card(
+          elevation: 8,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Column(
+            children: [
+              SizedBox(
+                height: screenHeight * 0.33,
+                width: double.infinity,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.asset(student.headerImagePath, fit: BoxFit.cover),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(12),
+                          color: Colors.black.withOpacity(0.3),
+                          child: Text(
+                            student.UserName,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -180,6 +180,7 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
           ),
         ),
 
+        // Swiping behavior
         Positioned.fill(
           child: Listener(
             behavior: HitTestBehavior.translucent,
@@ -190,7 +191,6 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
               final endX = event.position.dx;
               final swipeDistance = endX - _startX;
 
-              //ACTIONS AFTER A SWIPE
               if (swipeDistance < -90) {
                 debugPrint('Final Swipe: Left');
               } else if (swipeDistance > 90) {
@@ -200,13 +200,10 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
             child: Container(),
           ),
         ),
-
       ],
     );
   }
 }
-
-// Subcomponents
 
 class _CoursePill extends StatelessWidget {
   final String label;
@@ -254,9 +251,13 @@ class _InfoButton extends StatelessWidget {
             child: Icon(icon, color: isSelected ? Colors.white : Colors.black, size: 28),
           ),
           const SizedBox(height: 8),
-          Text(label,
-              style: TextStyle(
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: Colors.black)),
+          Text(
+            label,
+            style: TextStyle(
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              color: Colors.black,
+            ),
+          ),
         ],
       ),
     );
