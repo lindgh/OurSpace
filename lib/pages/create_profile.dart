@@ -1,7 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'dart:nativewrappers/_internal/vm/lib/typed_data_patch.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+
+//import 'package:OurSpace/models/pickImage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'navigation_bar.dart';
+import '../components/majors.dart';
+import '../components/colleges.dart';
+import '../components/graduation_years.dart';
+import '../models/pickImage.dart';
+import '../services/upload/add_data.dart';
 
 class CreateProfilePage extends StatefulWidget {
   static route() => MaterialPageRoute(
@@ -15,36 +25,29 @@ class CreateProfilePage extends StatefulWidget {
 
 class _CreateProfilePageState extends State<CreateProfilePage> {
 
-  final currentUser = FirebaseAuth.instance.currentUser;
   final nameController = TextEditingController();
   final collegeController = TextEditingController();
+  final gradYearController = TextEditingController();
   final majorController = TextEditingController();
+  final bioController = TextEditingController();
+  Uint8List? _userImage;
+
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _userImage = img;
+    });
+  }
 
   void uploadUserInfo() async {
-    //if all fields contain info, then we can upload
-    // final String currentUserID = FirebaseAuth.instance.currentUser!.uid;
-    // final String currentUserEmail = FirebaseAuth.instance.currentUser!.email!;
-
-    if ((nameController.text.isNotEmpty) && (majorController.text.isNotEmpty) &&
-        (collegeController.text.isNotEmpty)) {
-
-      // this needs to be update, not add - emily ( i changed it )
-      FirebaseFirestore.instance.collection("Users").doc(currentUser!.uid).update( {
-
-        'Name': nameController.text,
-        'Major': majorController.text,
-        'College': collegeController.text,
-      });
-      // CollectionReference collection = FirebaseFirestore.instance.collection("Users");
-      // //await FirebaseFirestore.instance.collection("Users").doc('${currentUserID}');
-      // collection.doc('${currentUserID}').set({
-      //   'Email': currentUserEmail,
-      //   'uid': currentUserID,
-      //   'Name': nameController.text,
-      //   'Major': majorController.text,
-      //   'College': collegeController.text,
-      // }, SetOptions());
-    }
+    String response = await StoreData().saveData(
+        name: nameController.text,
+        major: majorController.text,
+        college: collegeController.text,
+        gradYear: gradYearController.text,
+        biography: bioController.text,
+        file: _userImage!
+    );
   }
 
   @override
@@ -52,6 +55,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     return Scaffold(
       appBar: AppBar(
           title: const Text('Create your profile'),
+          centerTitle: true,
           backgroundColor: Colors.indigo,
           foregroundColor: Colors.white, //makes app bar text white
           leadingWidth: 100, //centers text on app bar
@@ -59,53 +63,133 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
       backgroundColor: Colors.white,
       body: ListView(
         children: [
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 40.0),
             child: Column(
               children: [
+                SizedBox(width: 30.0, height: 30.0),
+
+                Stack(
+                  children: [
+                    _userImage != null ?
+                      CircleAvatar(
+                        radius: 70,
+                        backgroundImage: MemoryImage(_userImage!),
+                      )
+                      :
+                    const CircleAvatar(
+                      radius: 70,
+                      backgroundImage: NetworkImage('https://i.imgur.com/aNPydA6.png'),
+                    ),
+                    Positioned(
+                      child: IconButton(
+                        onPressed: selectImage,
+                        icon: const Icon(Icons.add_a_photo_rounded),
+                        iconSize: 30,
+                        hoverColor: Colors.indigo,
+                      ),
+                      bottom: -4,
+                      left: 95,
+                      //top: -30,
+                    ),
+                  ],
+                ),
+
+                SizedBox(width: 30.0, height: 30.0),
+
                 TextField( //THIS DISPLAYS NAME TEXT FIELD!
                   controller: nameController, //this lets us save the name they type!
                   decoration: InputDecoration(
-                    labelText: 'Name',
-                    border: UnderlineInputBorder(),
+                    labelText: 'Full Name',
+                    border: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(100.0)
+                    ),
+                    prefixIcon: Icon(LineAwesomeIcons.user),
+                    //icon: ,
                     //contentPadding: EdgeInsets.only(top: 30.0, bottom: 10.0),
                   ),
                 ),
 
                 SizedBox(width: 30.0, height: 30.0), //this puts space btwn name & major box
 
-                TextField( //THIS DISPLAYS MAJOR TEXT FIELD!
+                DropdownMenu(
+                  label: const Text('Select Major'),
                   controller: majorController,
-                  decoration: InputDecoration(
-                    labelText: 'Major',
-                    border: UnderlineInputBorder(),
-                    //contentPadding: EdgeInsets.only(top: 40.0, bottom: 10.0),
-                  ),
+                  expandedInsets: EdgeInsets.zero,
+                  requestFocusOnTap: true,
+                  enableSearch: true,
+                  enableFilter: true,
+                  menuHeight: 400.0,
+                  onSelected: (value){
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  dropdownMenuEntries: majorOptions.map((e) => DropdownMenuEntry(value: e, label: e)).toList(),
                 ),
 
                 SizedBox(width: 30.0, height: 30.0), //this puts space btwn major & college box
 
-                TextField( //THIS DISPLAYS COLLEGE TEXT FIELD!
+                DropdownMenu(
+                  label: const Text('Select College'),
                   controller: collegeController,
+                  expandedInsets: EdgeInsets.zero,
+                  requestFocusOnTap: true,
+                  enableSearch: true,
+                  enableFilter: true,
+                  menuHeight: 400.0,
+                  onSelected: (value){
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  dropdownMenuEntries: collegeOptions.map((e) => DropdownMenuEntry(value: e, label: e)).toList(),
+                ),
+
+                SizedBox(width: 30.0, height: 30.0),
+
+                DropdownMenu(
+                  label: const Text('Select Graduation Year'),
+                  controller: gradYearController,
+                  expandedInsets: EdgeInsets.zero,
+                  requestFocusOnTap: true,
+                  enableSearch: true,
+                  enableFilter: true,
+                  menuHeight: 400.0,
+                  onSelected: (value){
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  dropdownMenuEntries: gradYearOptions.map((e) => DropdownMenuEntry(value: e, label: e)).toList(),
+                ),
+
+                SizedBox(width: 30.0, height: 30.0),
+
+                TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  controller: bioController,
+                  maxLines: 4,
                   decoration: InputDecoration(
-                    labelText: 'College',
-                    border: UnderlineInputBorder(),
-                    //contentPadding: EdgeInsets.only(top: 40.0, bottom: 10.0),
+                    prefixIcon: Padding(
+                      padding: const EdgeInsets.only(bottom: 73),
+                      child: Icon(LineAwesomeIcons.comment),
+                    ),
+                    alignLabelWithHint: true,
+                    labelText: 'Biography',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+
                   ),
                 ),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 100),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 100),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.indigoAccent,
-                  surfaceTintColor: Colors.indigoAccent,
-                  textStyle: TextStyle(
-                    fontSize: 18,
-                  ),
+                backgroundColor: Colors.indigo,
+
+                textStyle: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
               onPressed: () {
                 uploadUserInfo();
@@ -113,11 +197,18 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                     MaterialPageRoute(builder: (_) => NavBar(),
                     ));
               },
-              child: const Text('Finish'),
+              child: const Text('Finish',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ],
       ),
     ); //scaffold
   }
+
+
 }

@@ -52,6 +52,14 @@ class ProfilePage extends StatelessWidget {
                   "Your College: ${user.UserCollege}",
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
+                Text(
+                  "Your Graduation Year: ${user.UserGradYear}",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+                Text(
+                  "Your Biography: ${user.UserBiography}",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
                 const SizedBox(height: 20), // spacing between text and button
                 ElevatedButton(
                   onPressed: () {
