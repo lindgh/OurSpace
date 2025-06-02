@@ -9,6 +9,7 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'navigation_bar.dart';
 import '../components/majors.dart';
 import '../components/colleges.dart';
+import '../components/graduation_years.dart';
 import '../models/pickImage.dart';
 import '../services/upload/add_data.dart';
 
@@ -26,6 +27,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
   final nameController = TextEditingController();
   final collegeController = TextEditingController();
+  final gradYearController = TextEditingController();
   final majorController = TextEditingController();
   final bioController = TextEditingController();
   Uint8List? _userImage;
@@ -42,6 +44,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
         name: nameController.text,
         major: majorController.text,
         college: collegeController.text,
+        gradYear: gradYearController.text,
         biography: bioController.text,
         file: _userImage!
     );
@@ -137,6 +140,22 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                     FocusManager.instance.primaryFocus?.unfocus();
                   },
                   dropdownMenuEntries: collegeOptions.map((e) => DropdownMenuEntry(value: e, label: e)).toList(),
+                ),
+
+                SizedBox(width: 30.0, height: 30.0),
+
+                DropdownMenu(
+                  label: const Text('Select Graduation Year'),
+                  controller: gradYearController,
+                  expandedInsets: EdgeInsets.zero,
+                  requestFocusOnTap: true,
+                  enableSearch: true,
+                  enableFilter: true,
+                  menuHeight: 400.0,
+                  onSelected: (value){
+                    FocusManager.instance.primaryFocus?.unfocus();
+                  },
+                  dropdownMenuEntries: gradYearOptions.map((e) => DropdownMenuEntry(value: e, label: e)).toList(),
                 ),
 
                 SizedBox(width: 30.0, height: 30.0),

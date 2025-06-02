@@ -62,6 +62,7 @@ class authentication {
             'Name': null,
             'Major': null,
             'College': null,
+            'Graduation Year': null,
             'Biography': null,
           }
       );

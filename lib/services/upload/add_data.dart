@@ -16,15 +16,19 @@ class StoreData{
 
     UploadTask uploadTask = imageDirectoryReference.putData(file);
     TaskSnapshot snapshot = await uploadTask;
-    String downloadUrl = await snapshot.ref.getDownloadURL();
+    String downloadURL = await snapshot.ref.getDownloadURL();
 
-    return downloadUrl;
+    // await imageDirectoryReference.putData(file);
+    // String downloadURL = await imageDirectoryReference.getDownloadURL();
+
+    return downloadURL;
   }
 
   Future<String> saveData({
     required String name,
     required String major,
     required String college,
+    required String gradYear,
     required String biography,
     required Uint8List file,
   }) async {
@@ -32,11 +36,13 @@ class StoreData{
     try{
       if (name.isNotEmpty && major.isNotEmpty && college.isNotEmpty) {
         String imageURL = await uploadImageToStorage('profile_images', file);
+        // String imageURL = 'null';
         await _firestore.collection("Users").doc(_auth.currentUser!.uid).update(
             {
               'Name': name,
               'Major': major,
               'College': college,
+              'Graduation Year': gradYear,
               'Biography': biography,
               'Profile Picture': imageURL,
             });

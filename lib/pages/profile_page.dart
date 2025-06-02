@@ -53,6 +53,10 @@ class ProfilePage extends StatelessWidget {
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 Text(
+                  "Your Graduation Year: ${user.UserGradYear}",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+                Text(
                   "Your Biography: ${user.UserBiography}",
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),

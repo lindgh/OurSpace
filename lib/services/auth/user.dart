@@ -11,8 +11,9 @@ class UserData {
   final String? UserName;
   final String? UserMajor; // change to int?
   final String? UserCollege; // change to int?
+  final String? UserGradYear;
   final String? UserBiography;
-  final Uint8List? UserProfilePicture;
+  final String? UserProfilePicture;
 
   UserData({
     required this.UserUID,
@@ -20,6 +21,7 @@ class UserData {
     required this.UserName,
     required this.UserMajor,
     required this.UserCollege,
+    required this.UserGradYear,
     required this.UserBiography,
     required this.UserProfilePicture,
   });
@@ -32,6 +34,7 @@ class UserData {
       UserName: data['Name'],
       UserMajor: data['Major'],
       UserCollege: data['College'],
+      UserGradYear: data['Graduation Year'],
       UserBiography: data['Biography'],
       UserProfilePicture: data['Profile Picture'],
     );
