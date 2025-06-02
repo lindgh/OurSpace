@@ -6,12 +6,12 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'navigation_bar.dart';
 import '../components/majors.dart';
 import '../components/colleges.dart';
 import '../components/graduation_years.dart';
 import '../models/pickImage.dart';
 import '../services/upload/add_data.dart';
+import '../services/upload/upload_gate.dart';
 
 class CreateProfilePage extends StatefulWidget {
   static route() => MaterialPageRoute(
@@ -67,7 +67,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
             padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 40.0),
             child: Column(
               children: [
-                SizedBox(width: 30.0, height: 30.0),
+                SizedBox(width: 30.0, height: 10.0),
 
                 Stack(
                   children: [
@@ -181,7 +181,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 100),
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 100),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.indigo,
@@ -194,10 +194,10 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
               onPressed: () {
                 uploadUserInfo();
                 Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => NavBar(),
+                    MaterialPageRoute(builder: (_) => UploadGate(),
                     ));
               },
-              child: const Text('Finish',
+              child: const Text('Join OurSpace',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
