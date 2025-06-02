@@ -24,44 +24,81 @@ class ProfilePage extends StatelessWidget {
         final user = snapshot.data!;
 
         return Scaffold(
-          appBar: AppBar(title: const Text('Profile Page')),
-          backgroundColor: Colors.green,
+
+          backgroundColor: Colors.white,
 
           body: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              //mainAxisAlignment: MainAxisAlignment.center,
               // centers both text and button vertically
-              children: [
-                Text(
-                  "Your UID: ${user.UserUID}",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.indigo,
+                  ),
+                  child: Container(
+                    width: double.infinity,
+                    height: 350.0,
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(height: 30),
+                          CircleAvatar(
+                            radius: 100,
+                            backgroundImage: NetworkImage(user.UserProfilePicture!),
+                          ),
+                          SizedBox(height: 30),
+                          Text(
+                            user.UserName!,
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                Text(
-                  "Your Name: ${user.UserName}",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 15,
+                          children: [
+                            Icon(Icons.school),
+                            Text(
+                              user.UserCollege!,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                Text(
-                  "Your Email: ${user.UserEmail}",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-                Text(
-                  "Your Major: ${user.UserMajor}",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-                Text(
-                  "Your College: ${user.UserCollege}",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-                Text(
-                  "Your Graduation Year: ${user.UserGradYear}",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-                Text(
-                  "Your Biography: ${user.UserBiography}",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-                const SizedBox(height: 20), // spacing between text and button
+
+                const SizedBox(height: 200), // spacing between text and button
                 ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('Edit Profile'),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  style: ButtonStyle(
+
+                  ),
                   onPressed: () {
                     signOut(context);
                   },
