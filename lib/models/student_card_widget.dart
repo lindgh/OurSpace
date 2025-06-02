@@ -11,6 +11,8 @@ class StudentCardWidget extends StatefulWidget {
 }
 
 class _StudentCardWidgetState extends State<StudentCardWidget> {
+  double _startX = 0.0;
+
   String selectedSection = 'Study Focus';
 
   @override
@@ -48,7 +50,9 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
+
             Text(student.UserMajor, style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+
             const SizedBox(height: 16),
             Wrap(
               alignment: WrapAlignment.center,
@@ -130,52 +134,74 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                         textAlign: TextAlign.center,
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
 
-          // Toggle Buttons
-          Padding(
-            padding: const EdgeInsets.only(top: 16, bottom: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _InfoButton(
-                  icon: Icons.school,
-                  label: 'School',
-                  isSelected: selectedSection == 'School',
-                  onTap: () => setState(() => selectedSection = 'School'),
+              // Toggle Buttons
+              Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _InfoButton(
+                      icon: Icons.school,
+                      label: 'School',
+                      isSelected: selectedSection == 'School',
+                      onTap: () => setState(() => selectedSection = 'School'),
+                    ),
+                    _InfoButton(
+                      icon: Icons.menu_book,
+                      label: 'Study Focus',
+                      isSelected: selectedSection == 'Study Focus',
+                      onTap: () => setState(() => selectedSection = 'Study Focus'),
+                    ),
+                    _InfoButton(
+                      icon: Icons.person,
+                      label: 'Bio',
+                      isSelected: selectedSection == 'Bio',
+                      onTap: () => setState(() => selectedSection = 'Bio'),
+                    ),
+                  ],
                 ),
-                _InfoButton(
-                  icon: Icons.menu_book,
-                  label: 'Study Focus',
-                  isSelected: selectedSection == 'Study Focus',
-                  onTap: () => setState(() => selectedSection = 'Study Focus'),
-                ),
-                _InfoButton(
-                  icon: Icons.person,
-                  label: 'Bio',
-                  isSelected: selectedSection == 'Bio',
-                  onTap: () => setState(() => selectedSection = 'Bio'),
-                ),
-              ],
-            ),
-          ),
+              ),
 
-          // Dynamic Section Content
-          Expanded(
-            child: selectedSection == 'School'
-                ? infoContent[selectedSection]!
-                : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: infoContent[selectedSection]!,
-            ),
+              // Dynamic Section Content
+              Expanded(
+                child: selectedSection == 'School'
+                    ? infoContent[selectedSection]!
+                    : SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: infoContent[selectedSection]!,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+
+        Positioned.fill(
+          child: Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: (event) {
+              _startX = event.position.dx;
+            },
+            onPointerUp: (event) {
+              final endX = event.position.dx;
+              final swipeDistance = endX - _startX;
+
+              //ACTIONS AFTER A SWIPE
+              if (swipeDistance < -90) {
+                debugPrint('Final Swipe: Left');
+              } else if (swipeDistance > 90) {
+                debugPrint('Final Swipe: Right');
+              }
+            },
+            child: Container(),
+          ),
+        ),
+
+      ],
     );
   }
 }

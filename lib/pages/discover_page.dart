@@ -39,11 +39,13 @@ class _DiscoverPageState extends State<DiscoverPage> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: SafeArea(
+
         child: _currentCards == null
             ? Center(child: CircularProgressIndicator())
             : _currentCards!.isEmpty
             ? Center(child: CircularProgressIndicator()) //child: Text('No users found.'))
             : CardSwiper(
+              threshold: 70,
           cards: _currentCards
           !.map((student) => StudentCardWidget(student: student))
               .toList(),
