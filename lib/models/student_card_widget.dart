@@ -15,7 +15,6 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
 
   String selectedSection = 'Study Focus';
 
-
   @override
   Widget build(BuildContext context) {
     final student = widget.student;
@@ -27,7 +26,7 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
         children: [
           const SizedBox(height: 24),
           Text(
-            student.school,
+            student.UserCollege,
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
@@ -50,7 +49,10 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(student.majorTitle, style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+
+
+            Text(student.UserMajor, style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
+
             const SizedBox(height: 16),
             Wrap(
               alignment: WrapAlignment.center,
@@ -81,9 +83,9 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(student.name, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                      Text(student.UserName, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 4),
-                      Text(student.school, style: const TextStyle(fontSize: 16, color: Colors.grey)),
+                      Text(student.UserCollege, style: const TextStyle(fontSize: 16, color: Colors.grey)),
                     ],
                   ),
                 ),
@@ -101,40 +103,36 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
               ],
             ),
             const SizedBox(height: 24),
-            Text(student.bio, style: const TextStyle(fontSize: 16)),
+            Text(student.UserBio, style: const TextStyle(fontSize: 16)),
           ],
         ),
       ),
     };
 
-    return Stack(
-      children: [
-        Card(
-          elevation: 8,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          child: Column(
-            children: [
-              SizedBox(
-                height: screenHeight * 0.33,
-                width: double.infinity,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Image.asset(student.headerImagePath, fit: BoxFit.cover),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(12),
-                          color: Colors.black.withOpacity(0.3),
-                          child: Text(
-                            student.name,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-                          ),
-                        ),
+    return Card(
+      elevation: 8,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Column(
+        children: [
+          SizedBox(
+            height: screenHeight * 0.33,
+            width: double.infinity,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.asset(student.headerImagePath, fit: BoxFit.cover),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      color: Colors.black.withOpacity(0.3),
+                      child: Text(
+                        student.UserName,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ],
                   ),

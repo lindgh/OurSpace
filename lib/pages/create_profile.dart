@@ -24,7 +24,6 @@ class CreateProfilePage extends StatefulWidget {
 }
 
 class _CreateProfilePageState extends State<CreateProfilePage> {
-
   final nameController = TextEditingController();
   final collegeController = TextEditingController();
   final gradYearController = TextEditingController();
@@ -209,6 +208,4 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
       ),
     ); //scaffold
   }
-
-
 }
