@@ -11,7 +11,10 @@ class StudentCardWidget extends StatefulWidget {
 }
 
 class _StudentCardWidgetState extends State<StudentCardWidget> {
+  double _startX = 0.0;
+
   String selectedSection = 'Study Focus';
+
 
   @override
   Widget build(BuildContext context) {
@@ -182,16 +185,24 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
         Positioned.fill(
           child: Listener(
             behavior: HitTestBehavior.translucent,
-            onPointerMove: (event) {
-              if (event.delta.dx < -10) {
-                debugPrint('Swiped Left');
-              } else if (event.delta.dx > 10) {
-                debugPrint('Swiped Right');
+            onPointerDown: (event) {
+              _startX = event.position.dx;
+            },
+            onPointerUp: (event) {
+              final endX = event.position.dx;
+              final swipeDistance = endX - _startX;
+
+              //ACTIONS AFTER A SWIPE
+              if (swipeDistance < -90) {
+                debugPrint('Final Swipe: Left');
+              } else if (swipeDistance > 90) {
+                debugPrint('Final Swipe: Right');
               }
             },
-            child: Container(), // invisible layer
+            child: Container(),
           ),
         ),
+
       ],
     );
   }
