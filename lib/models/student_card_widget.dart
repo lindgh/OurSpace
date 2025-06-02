@@ -11,7 +11,7 @@ class StudentCardWidget extends StatefulWidget {
 }
 
 class _StudentCardWidgetState extends State<StudentCardWidget> {
-  String selectedSection = 'Study Focus'; // ✅ This should already be true
+  String selectedSection = 'Study Focus';
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +104,6 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
       ),
     };
 
-    // ✅ Transparent swipe detection with functional card swiping
     return Stack(
       children: [
         Card(
@@ -180,7 +179,6 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
           ),
         ),
 
-        // 🧠 Transparent swipe overlay
         Positioned.fill(
           child: Listener(
             behavior: HitTestBehavior.translucent,
