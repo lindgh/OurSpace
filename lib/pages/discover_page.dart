@@ -41,7 +41,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
       backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: CardSwiper(
-
+          threshold: 70,
           cards: _currentCards.map((student) => StudentCardWidget(student: student)).toList(),
           onEnd: _onEnd,
         ),
