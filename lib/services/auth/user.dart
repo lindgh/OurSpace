@@ -14,6 +14,7 @@ class UserData {
   final String? UserGradYear;
   final String? UserBiography;
   final String? UserProfilePicture;
+  final List<String>? inquiredUsers;
 
   UserData({
     required this.UserUID,
@@ -24,6 +25,7 @@ class UserData {
     required this.UserGradYear,
     required this.UserBiography,
     required this.UserProfilePicture,
+    this.inquiredUsers
   });
 
   factory UserData.fromFirestore(DocumentSnapshot doc) {
@@ -37,6 +39,9 @@ class UserData {
       UserGradYear: data['Graduation Year'],
       UserBiography: data['Biography'],
       UserProfilePicture: data['Profile Picture'],
+      inquiredUsers: (data['inquired_users'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList(),
     );
   }
 
@@ -57,5 +62,23 @@ class UserData {
       print('Error: $e');
       return null;
     }
+  }
+}
+
+Future<void> addInquiredUser(String swipedUserId) async {
+  final currentUser = FirebaseAuth.instance.currentUser;
+
+  if (currentUser == null) return;
+
+  final userDoc = FirebaseFirestore.instance.collection('Users').doc(currentUser.uid);
+
+  try {
+    await userDoc.update({
+      'inquired_users': FieldValue.arrayUnion([swipedUserId])
+    });
+
+    print("Added $swipedUserId to inquired_users");
+  } catch (e) {
+    print("Failed to update inquired_users: $e");
   }
 }

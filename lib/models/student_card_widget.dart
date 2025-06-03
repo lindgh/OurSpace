@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'student_card_model.dart';
+import '../services/auth/user.dart';
 
 class StudentCardWidget extends StatefulWidget {
   final StudentCard student;
@@ -195,6 +196,7 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                 debugPrint('NOT INTERESTED');
               } else if (swipeDistance > 90) {
                 debugPrint('INTERESTED, uid: ${student.uid}');
+                addInquiredUser(student.uid);
               }
             },
             child: Container(),
