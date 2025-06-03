@@ -18,11 +18,7 @@ Future<List<StudentCard>> getAllUserData() async {
         UserCollege: data['College'] ?? '',
         UserMajor: data['Major'] ?? '',
         UserGradYear: data['Graduation Year'] ?? '',
-        headerImagePath: "assets/images/placeholder_OI.jpg",
-        profileImagePath: "assets/images/placeholder_OI_pfp.jpg",
-        schoolImagePath: "assets/images/placeholder_school_ucr.jpg",
-        courses: ["CS147", "CS173", "EE120B", "MATH009B", "EE108"],
-        studyFocusText: "Looking for someone to help me study the CS153 exam. I really don't understand this stuff. \n\nMaybe if you help me learn a lot, I'll take you out on a date..",
+        profileImagePath: data['Profile Picture'] ?? '',
         UserBio: data['Biography'] ?? '',
         uid: data['uid'] ?? ''
       );

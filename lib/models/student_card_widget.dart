@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'student_card_model.dart';
 import '../services/auth/user.dart';
 
@@ -13,7 +14,7 @@ class StudentCardWidget extends StatefulWidget {
 
 class _StudentCardWidgetState extends State<StudentCardWidget> {
   double _startX = 0.0;
-  String selectedSection = 'Study Focus';
+  String selectedSection = 'Bio';
 
   @override
   Widget build(BuildContext context) {
@@ -21,86 +22,47 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     final Map<String, Widget> infoContent = {
-      'School': Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SizedBox(height: 24),
-          Text(
-            student.UserCollege,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
-              child: Image.asset(
-                student.schoolImagePath,
-                fit: BoxFit.cover,
-                width: double.infinity,
-              ),
-            ),
-          ),
-        ],
-      ),
-
-      'Study Focus': Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(student.UserMajor, style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            Wrap(
-              alignment: WrapAlignment.center,
-              spacing: 12,
-              runSpacing: 8,
-              children: student.courses.map((course) => _CoursePill(label: course)).toList(),
-            ),
-            const SizedBox(height: 24),
-            Text(student.studyFocusText, style: const TextStyle(fontSize: 16)),
-          ],
-        ),
-      ),
-
       'Bio': Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage(student.profileImagePath),
-                ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(student.UserName, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 4),
-                      Text(student.UserCollege, style: const TextStyle(fontSize: 16, color: Colors.grey)),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            WidgetSpan(child: Icon(Icons.menu_book, color: Colors.indigo, size: 30)),
+                            TextSpan(text: "  "),
+                            TextSpan(text: student.UserMajor, style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold, color: Colors.black)),
+
+                            TextSpan(text: "\n"),
+                            WidgetSpan(child: Icon(Icons.location_on, color: Colors.indigo)),
+                            TextSpan(text: "  "),
+                            TextSpan(text: student.UserCollege, style: const TextStyle(fontSize: 20, color: Colors.black45)),
+
+                            TextSpan(text: "\n"),
+                            WidgetSpan(child: Icon(Icons.calendar_month, color: Colors.indigo)),
+                            TextSpan(text: "  "),
+                            TextSpan(text: student.UserGradYear, style: const TextStyle(fontSize: 20, color: Colors.black45)),
+
+                            TextSpan(text: "\n\n"),
+                            TextSpan(text: student.UserBio, style: const TextStyle(fontSize: 23, color: Colors.black)),
+                          ]
+                        )
+                      ),
+
                     ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                _SocialIconButton(icon: Icons.link, label: 'LinkedIn'),
-                SizedBox(width: 24),
-                _SocialIconButton(icon: Icons.email, label: 'Email'),
-                SizedBox(width: 24),
-                _SocialIconButton(icon: Icons.share, label: 'Other'),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Text(student.UserBio, style: const TextStyle(fontSize: 16)),
           ],
         ),
       ),
@@ -114,14 +76,17 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
           child: Column(
             children: [
               SizedBox(
-                height: screenHeight * 0.33,
+                height: screenHeight * 0.50,
                 width: double.infinity,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                   child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Image.asset(student.headerImagePath, fit: BoxFit.cover),
+                    fit: StackFit.loose,
+                    children: <Widget>[
+                      Positioned.fill(child: Image.network(
+                        student.profileImagePath,
+                        fit:BoxFit.fitHeight,
+                      )),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(
@@ -131,7 +96,7 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                           child: Text(
                             student.UserName,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                            style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                         ),
                       ),
@@ -140,39 +105,9 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                 ),
               ),
 
-              // Toggle Buttons
-              Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _InfoButton(
-                      icon: Icons.school,
-                      label: 'School',
-                      isSelected: selectedSection == 'School',
-                      onTap: () => setState(() => selectedSection = 'School'),
-                    ),
-                    _InfoButton(
-                      icon: Icons.menu_book,
-                      label: 'Study Focus',
-                      isSelected: selectedSection == 'Study Focus',
-                      onTap: () => setState(() => selectedSection = 'Study Focus'),
-                    ),
-                    _InfoButton(
-                      icon: Icons.person,
-                      label: 'Bio',
-                      isSelected: selectedSection == 'Bio',
-                      onTap: () => setState(() => selectedSection = 'Bio'),
-                    ),
-                  ],
-                ),
-              ),
-
               // Dynamic Section Content
               Expanded(
-                child: selectedSection == 'School'
-                    ? infoContent[selectedSection]!
-                    : SingleChildScrollView(
+                child: SingleChildScrollView(
                   padding: const EdgeInsets.all(16),
                   child: infoContent[selectedSection]!,
                 ),
@@ -202,90 +137,6 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
             child: Container(),
           ),
         ),
-      ],
-    );
-  }
-}
-
-class _CoursePill extends StatelessWidget {
-  final String label;
-
-  const _CoursePill({required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.blue.shade100,
-        borderRadius: BorderRadius.circular(32),
-      ),
-      child: Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-    );
-  }
-}
-
-class _InfoButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _InfoButton({
-    required this.icon,
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: isSelected ? Colors.indigoAccent : Colors.grey[200],
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: isSelected ? Colors.white : Colors.black, size: 28),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: TextStyle(
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _SocialIconButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-
-  const _SocialIconButton({required this.icon, required this.label});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.indigoAccent.withOpacity(0.1),
-          ),
-          child: Icon(icon, size: 24, color: Colors.indigo),
-        ),
-        const SizedBox(height: 4),
-        Text(label, style: const TextStyle(fontSize: 12)),
       ],
     );
   }
