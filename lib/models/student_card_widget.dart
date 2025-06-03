@@ -11,7 +11,116 @@ class StudentCardWidget extends StatefulWidget {
 }
 
 class _StudentCardWidgetState extends State<StudentCardWidget> {
-  String selectedSection = 'Study Focus'; // ✅ This should already be true
+  String selectedSection = 'Study Focus';
+
+  void _showBlockDialog(BuildContext context, StudentCard student) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Block User'),
+        content: Text('Are you sure you want to block ${student.name}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // TODO: Implement block logic (e.g., update Firebase or local list)
+              print('Blocked ${student.name}');
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
+            child: const Text('Block'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showReportDialog(BuildContext context, StudentCard student) {
+    String selectedReason = 'Cyberbullying';
+    String customReason = '';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Report User'),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RadioListTile<String>(
+                      title: const Text('Cyberbullying'),
+                      value: 'Cyberbullying',
+                      groupValue: selectedReason,
+                      onChanged: (value) => setState(() => selectedReason = value!),
+                    ),
+                    RadioListTile<String>(
+                      title: const Text('Abuse/Harassment'),
+                      value: 'Abuse/Harassment',
+                      groupValue: selectedReason,
+                      onChanged: (value) => setState(() => selectedReason = value!),
+                    ),
+                    RadioListTile<String>(
+                      title: const Text('Fraud/Scam'),
+                      value: 'Fraud/Scam',
+                      groupValue: selectedReason,
+                      onChanged: (value) => setState(() => selectedReason = value!),
+                    ),
+                    RadioListTile<String>(
+                      title: const Text('Inappropriate Behavior'),
+                      value: 'Inappropriate Behavior',
+                      groupValue: selectedReason,
+                      onChanged: (value) => setState(() => selectedReason = value!),
+                    ),
+                    RadioListTile<String>(
+                      title: const Text('Spam'),
+                      value: 'Spam',
+                      groupValue: selectedReason,
+                      onChanged: (value) => setState(() => selectedReason = value!),
+                    ),
+                    RadioListTile<String>(
+                      title: const Text('Other (please specify)'),
+                      value: 'Other',
+                      groupValue: selectedReason,
+                      onChanged: (value) => setState(() => selectedReason = value!),
+                    ),
+                    if (selectedReason == 'Other')
+                      TextField(
+                        onChanged: (value) => customReason = value,
+                        decoration: const InputDecoration(
+                          hintText: 'Enter reason...',
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    final reasonToSend = selectedReason == 'Other' ? customReason : selectedReason;
+
+                    // TODO: Replace with Firebase submission logic
+                    print('Reported ${student.name}: $reasonToSend');
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Submit'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +237,34 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                 fit: StackFit.expand,
                 children: [
                   Image.asset(student.headerImagePath, fit: BoxFit.cover),
+
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: PopupMenuButton<String>(
+                      icon: const Icon(Icons.more_vert, color: Colors.white),
+                      onSelected: (value) {
+                        if (value == 'report') {
+                          _showReportDialog(context, student);
+                        } else if (value == 'block') {
+                          _showBlockDialog(context, student);
+                        }
+                      },
+                      itemBuilder: (context) => const [
+                        PopupMenuItem<String>(
+                          value: 'report',
+                          child: Text('Report'),
+                        ),
+                        PopupMenuItem<String>(
+                          value: 'block',
+                          child: Text('Block'),
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
@@ -144,6 +281,7 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                 ],
               ),
             ),
+
           ),
 
           // Toggle Buttons
@@ -196,6 +334,7 @@ class _CoursePill extends StatelessWidget {
 
   const _CoursePill({required this.label});
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -221,6 +360,8 @@ class _InfoButton extends StatelessWidget {
     required this.isSelected,
     required this.onTap,
   });
+
+
 
   @override
   Widget build(BuildContext context) {
