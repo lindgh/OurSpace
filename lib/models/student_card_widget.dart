@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'student_card_model.dart';
 
 class StudentCardWidget extends StatefulWidget {
@@ -21,7 +22,7 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
 
     final Map<String, Widget> infoContent = {
       'Bio': Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -33,23 +34,29 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(student.UserName, textAlign: TextAlign.center, style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 4),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      RichText(
+                        text: TextSpan(
                           children: [
-                            Text(student.UserMajor, style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 4),
-                            Text(student.UserCollege, style: const TextStyle(fontSize: 20, color: Colors.grey)),
-                            const SizedBox(height: 2),
-                            Text(student.UserGradYear, style: const TextStyle(fontSize: 20, color: Colors.grey)),
-                            const SizedBox(height: 4),
-                            Text(student.UserBio, style: const TextStyle(fontSize: 23, color: Colors.black)),
+                            WidgetSpan(child: Icon(Icons.menu_book, color: Colors.indigo, size: 30)),
+                            TextSpan(text: "  "),
+                            TextSpan(text: student.UserMajor, style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold, color: Colors.black)),
+
+                            TextSpan(text: "\n"),
+                            WidgetSpan(child: Icon(Icons.location_on, color: Colors.indigo)),
+                            TextSpan(text: "  "),
+                            TextSpan(text: student.UserCollege, style: const TextStyle(fontSize: 20, color: Colors.black45)),
+
+                            TextSpan(text: "\n"),
+                            WidgetSpan(child: Icon(Icons.calendar_month, color: Colors.indigo)),
+                            TextSpan(text: "  "),
+                            TextSpan(text: student.UserGradYear, style: const TextStyle(fontSize: 20, color: Colors.black45)),
+
+                            TextSpan(text: "\n\n"),
+                            TextSpan(text: student.UserBio, style: const TextStyle(fontSize: 23, color: Colors.black)),
                           ]
-                        ),
+                        )
                       ),
+
                     ],
                   ),
                 ),
@@ -78,7 +85,20 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                       Positioned.fill(child: Image.network(
                         student.profileImagePath,
                         fit:BoxFit.fitHeight,
-                      ))
+                      )),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(12),
+                          color: Colors.black.withOpacity(0.3),
+                          child: Text(
+                            student.UserName,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
