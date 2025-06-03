@@ -68,18 +68,31 @@ class UserData {
 
 Future<void> addInquiredUser(String swipedUserId) async {
   final currentUser = FirebaseAuth.instance.currentUser;
-
   if (currentUser == null) return;
 
   final userDoc = FirebaseFirestore.instance.collection('Users').doc(currentUser.uid);
+  final swipedDoc = FirebaseFirestore.instance.collection('Users').doc(swipedUserId);
 
-  try {
+  final currentSnapshot = await userDoc.get();
+  final swipedSnapshot = await swipedDoc.get();
+
+  List<dynamic> currentInquired = currentSnapshot['inquired_users'] ?? [];
+  List<dynamic> swipedInquired = swipedSnapshot['inquired_users'] ?? [];
+  List<dynamic> currentMatched = currentSnapshot['matched_users'] ?? [];
+  List<dynamic> swipedMatched = swipedSnapshot['matched_users'] ?? [];
+
+  if (swipedInquired.contains(currentUser.uid)) {
+    // Match found!
+    await userDoc.update({
+      'matched_users': FieldValue.arrayUnion([swipedUserId]),
+    });
+    await swipedDoc.update({
+      'matched_users': FieldValue.arrayUnion([currentUser.uid]),
+    });
+  } else {
+    // Just an inquiry for now
     await userDoc.update({
       'inquired_users': FieldValue.arrayUnion([swipedUserId])
     });
-
-    print("Added $swipedUserId to inquired_users");
-  } catch (e) {
-    print("Failed to update inquired_users: $e");
   }
 }
