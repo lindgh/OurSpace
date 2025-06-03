@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:OurSpace/services/chat/chat_services.dart';
 import 'package:OurSpace/components/user_tile.dart';
 import '../services/auth/authentication.dart';
+import '../services/auth/user.dart';
 
 class MessagePage extends StatelessWidget {
   MessagePage({super.key});
@@ -24,24 +25,37 @@ class MessagePage extends StatelessWidget {
   }
 
   Widget _buildUserList() {
-    return StreamBuilder(
-      stream: _chatService.getUsersStream(),
+    return FutureBuilder<UserData?>(
+      future: UserData.fetchCurrentUser(),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Text("Error");
-        }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading...");
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
         }
 
-        return ListView(
-          children: snapshot.data!
-              .map<Widget>((userData) => _buildUserListItem(userData, context))
-              .toList(),
+        final matchedUserIds = snapshot.data!.matchedUsers ?? [];
+
+        return StreamBuilder(
+          stream: _chatService.getUsersStream(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) return const Text("Error");
+            if (snapshot.connectionState == ConnectionState.waiting) return const Text("Loading...");
+
+            final matchedUsers = snapshot.data!
+                .where((user) =>
+            user["uid"] != _authentication.getCurrentUser()!.uid &&
+                matchedUserIds.contains(user["uid"]))
+                .toList();
+
+            return ListView(
+              children: matchedUsers.map<Widget>((userData) =>
+                  _buildUserListItem(userData, context)).toList(),
+            );
+          },
         );
       },
     );
   }
+
 
   Widget _buildUserListItem(
       Map<String, dynamic> userData, BuildContext context) {

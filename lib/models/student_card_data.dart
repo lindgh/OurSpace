@@ -24,6 +24,7 @@ Future<List<StudentCard>> getAllUserData() async {
         courses: ["CS147", "CS173", "EE120B", "MATH009B", "EE108"],
         studyFocusText: "Looking for someone to help me study the CS153 exam. I really don't understand this stuff. \n\nMaybe if you help me learn a lot, I'll take you out on a date..",
         UserBio: data['Biography'] ?? '',
+        uid: data['uid'] ?? ''
       );
     }).toList();
 

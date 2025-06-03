@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'student_card_model.dart';
+import '../services/auth/user.dart';
 
 class StudentCardWidget extends StatefulWidget {
   final StudentCard student;
@@ -192,9 +193,10 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
               final swipeDistance = endX - _startX;
 
               if (swipeDistance < -90) {
-                debugPrint('Final Swipe: Left');
+                debugPrint('NOT INTERESTED');
               } else if (swipeDistance > 90) {
-                debugPrint('Final Swipe: Right');
+                debugPrint('INTERESTED, uid: ${student.uid}');
+                addInquiredUser(student.uid);
               }
             },
             child: Container(),

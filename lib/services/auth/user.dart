@@ -14,6 +14,8 @@ class UserData {
   final String? UserGradYear;
   final String? UserBiography;
   final String? UserProfilePicture;
+  final List<String>? inquiredUsers;
+  final List<String>? matchedUsers;
 
   UserData({
     required this.UserUID,
@@ -24,6 +26,8 @@ class UserData {
     required this.UserGradYear,
     required this.UserBiography,
     required this.UserProfilePicture,
+    this.inquiredUsers,
+    this.matchedUsers
   });
 
   factory UserData.fromFirestore(DocumentSnapshot doc) {
@@ -37,6 +41,8 @@ class UserData {
       UserGradYear: data['Graduation Year'],
       UserBiography: data['Biography'],
       UserProfilePicture: data['Profile Picture'],
+      inquiredUsers: (data['inquired_users'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
+      matchedUsers: (data['matched_users'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
     );
   }
 
@@ -57,5 +63,36 @@ class UserData {
       print('Error: $e');
       return null;
     }
+  }
+}
+
+Future<void> addInquiredUser(String swipedUserId) async {
+  final currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser == null) return;
+
+  final userDoc = FirebaseFirestore.instance.collection('Users').doc(currentUser.uid);
+  final swipedDoc = FirebaseFirestore.instance.collection('Users').doc(swipedUserId);
+
+  final currentSnapshot = await userDoc.get();
+  final swipedSnapshot = await swipedDoc.get();
+
+  List<dynamic> currentInquired = currentSnapshot['inquired_users'] ?? [];
+  List<dynamic> swipedInquired = swipedSnapshot['inquired_users'] ?? [];
+  List<dynamic> currentMatched = currentSnapshot['matched_users'] ?? [];
+  List<dynamic> swipedMatched = swipedSnapshot['matched_users'] ?? [];
+
+  if (swipedInquired.contains(currentUser.uid)) {
+    // Match found!
+    await userDoc.update({
+      'matched_users': FieldValue.arrayUnion([swipedUserId]),
+    });
+    await swipedDoc.update({
+      'matched_users': FieldValue.arrayUnion([currentUser.uid]),
+    });
+  } else {
+    // Just an inquiry for now
+    await userDoc.update({
+      'inquired_users': FieldValue.arrayUnion([swipedUserId])
+    });
   }
 }
