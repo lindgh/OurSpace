@@ -185,7 +185,6 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.indigo,
-
                 textStyle: TextStyle(
                   fontSize: 18,
                   color: Colors.white,

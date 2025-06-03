@@ -35,7 +35,11 @@ class StoreData{
     String response = "An error occurred while saving data.";
     try{
       if (name.isNotEmpty && major.isNotEmpty && college.isNotEmpty) {
-        String imageURL = await uploadImageToStorage('profile_images', file);
+        //testing line below
+        String imageURL = 'https://i.imgur.com/aNPydA6.png';
+        if (file.isNotEmpty) {
+          imageURL = await uploadImageToStorage('profile_images', file);
+        }
         // String imageURL = 'null';
         await _firestore.collection("Users").doc(_auth.currentUser!.uid).update(
             {
