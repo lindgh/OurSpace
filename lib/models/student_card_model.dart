@@ -9,6 +9,7 @@ class StudentCard {
   final List<String> courses;
   final String studyFocusText;
   final String UserBio;
+  final String uid;
 
   StudentCard({
     required this.UserName,
@@ -21,5 +22,6 @@ class StudentCard {
     required this.courses,
     required this.studyFocusText,
     required this.UserBio,
+    required this.uid
   });
 }
