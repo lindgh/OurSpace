@@ -15,6 +15,7 @@ class UserData {
   final String? UserBiography;
   final String? UserProfilePicture;
   final List<String>? inquiredUsers;
+  final List<String>? matchedUsers;
 
   UserData({
     required this.UserUID,
@@ -25,7 +26,8 @@ class UserData {
     required this.UserGradYear,
     required this.UserBiography,
     required this.UserProfilePicture,
-    this.inquiredUsers
+    this.inquiredUsers,
+    this.matchedUsers
   });
 
   factory UserData.fromFirestore(DocumentSnapshot doc) {
@@ -39,9 +41,8 @@ class UserData {
       UserGradYear: data['Graduation Year'],
       UserBiography: data['Biography'],
       UserProfilePicture: data['Profile Picture'],
-      inquiredUsers: (data['inquired_users'] as List<dynamic>?)
-          ?.map((e) => e.toString())
-          .toList(),
+      inquiredUsers: (data['inquired_users'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
+      matchedUsers: (data['matched_users'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
     );
   }
 
