@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 final List collegeOptions = [
   'Amherst College',
   'Babson College',
