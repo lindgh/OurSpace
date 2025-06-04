@@ -45,7 +45,7 @@ dependencies:
   flex_color_picker: ^3.7.1
   flutter_login: ^5.0.0
   firebase_storage: ^12.4.6
-  mockito: ^5.4.6
+  mockito: ^5.4.4
   firebase_auth_mocks: ^0.14.2
   build_runner: ^2.4.8
 
