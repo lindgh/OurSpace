@@ -8,8 +8,15 @@ final TextEditingController passwordController = TextEditingController();
 final formKey = GlobalKey<FormState>();
 
 class authentication {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late FirebaseAuth _auth = FirebaseAuth.instance;
+  late FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  authentication() {
+    _auth = FirebaseAuth.instance;
+    _firestore = FirebaseFirestore.instance;
+  }
+
+  authentication.test(this._auth, this._firestore);
 
   // get current user
   User? getCurrentUser() {
