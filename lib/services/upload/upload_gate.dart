@@ -11,7 +11,7 @@ class UploadGate extends StatelessWidget {
 
     if (user == null) return false;
 
-    return user.UserMajor != null && user.UserMajor!.isNotEmpty;
+    return user.UserName != null && user.UserName!.isNotEmpty;
   }
 
 
@@ -22,7 +22,6 @@ class UploadGate extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final user = snapshot.data;
-
           return FutureBuilder<bool>(
             future: hasUserData(),
             builder: (context, profileSnapshot) {

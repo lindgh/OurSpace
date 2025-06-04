@@ -1,7 +1,9 @@
 import 'dart:convert';
+//import 'dart:nativewrappers/_internal/vm/lib/internal_patch.dart';
 import 'dart:typed_data';
 
 //import 'package:OurSpace/models/pickImage.dart';
+import 'package:OurSpace/pages/navigation_bar.dart';
 import 'package:OurSpace/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,8 +12,11 @@ import '../components/majors.dart';
 import '../components/colleges.dart';
 import '../components/graduation_years.dart';
 import '../models/pickImage.dart';
+
 import '../services/upload/add_data.dart';
+
 import '../services/upload/upload_gate.dart';
+
 import '../services/auth/authentication.dart';
 import '../services/auth/user.dart';
 import 'create_profile.dart';
@@ -28,29 +33,65 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
 
-  var nameController = TextEditingController();
-  var collegeController = TextEditingController();
-  var gradYearController = TextEditingController();
-  var majorController = TextEditingController();
-  var bioController = TextEditingController();
+  var editNameController = TextEditingController();
+  final editCollegeController = TextEditingController();
+  final editGradYearController = TextEditingController();
+  final editMajorController = TextEditingController();
+  var editBioController = TextEditingController();
   Uint8List? _userImage;
+  bool isLoading = false;
 
-  void selectImage() async {
+  void selectEditedImage() async {
     Uint8List img = await pickImage(ImageSource.gallery);
     setState(() {
       _userImage = img;
     });
   }
 
-  void uploadUserInfo() async {
+  Future<String> uploadEditedUserInfo(String currentProfilePicture) async {
+    String newImageURL = currentProfilePicture;
+    if (_userImage != null) {
+      newImageURL = await StoreData().uploadImageToStorage(_userImage!);
+    }
     String response = await StoreData().saveData(
-        name: nameController.text,
-        major: majorController.text,
-        college: collegeController.text,
-        gradYear: gradYearController.text,
-        biography: bioController.text,
-        file: _userImage!
+        name: editNameController.text,
+        major: editMajorController.text,
+        college: editCollegeController.text,
+        gradYear: editGradYearController.text,
+        biography: editBioController.text,
+        imageURL: newImageURL,
     );
+
+    return response;
+  }
+
+  void saveChanges(String userImage) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      await Future.wait([
+        uploadEditedUserInfo(userImage),
+        Future.delayed(Duration(seconds: 3)),
+      ]);
+
+      if (!mounted) {
+        return;
+      }
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => NavBar(),
+          )
+      );
+    } catch (e) {
+      print("Error: $e");
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -70,12 +111,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           final user = snapshot.data!;
 
           //initialize controllers with information stored in database
-          nameController = new TextEditingController(text: user.UserName);
-          collegeController = new TextEditingController(text: user.UserCollege);
-          gradYearController = new TextEditingController(text: user.UserGradYear);
-          majorController = new TextEditingController(text: user.UserMajor);
-          bioController = new TextEditingController(text: user.UserBiography);
-
+          editNameController = new TextEditingController(text: user.UserName);
+          editBioController = new TextEditingController(text: user.UserBiography);
+          //printToConsole('Major selected: ${user.UserMajor}');
 
           return Scaffold(
             appBar: AppBar(
@@ -89,53 +127,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
             body: ListView(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 40.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
                   child: Column(
                     children: [
-                      SizedBox(width: 30.0, height: 10.0),
-                      Stack (
-                        children: [
-                          user.UserProfilePicture != null ?
-                          CircleAvatar(
-                            radius: 70,
-                            backgroundImage: NetworkImage(user.UserProfilePicture!),
-                          )
-                              :
-                          const CircleAvatar(
-                            radius: 70,
-                            backgroundImage: NetworkImage('https://i.imgur.com/aNPydA6.png'),
-                          ),
-                          Positioned(
-                            child: IconButton(
-                              onPressed: selectImage,
-                              icon: const Icon(Icons.add_a_photo_rounded),
-                              iconSize: 30,
-                              hoverColor: Colors.indigo,
-                            ),
-                            bottom: -4,
-                            left: 95,
-                            //top: -30,
-                          ),
-                        ],
-                      ),
                       SizedBox(width: 30.0, height: 30.0),
                       TextField( //THIS DISPLAYS NAME TEXT FIELD!
-                        controller: nameController, //this lets us save the name they type!
+                        controller: editNameController, //this lets us save the name they type!
                         decoration: InputDecoration(
                           labelText: 'Full Name',
                           border: OutlineInputBorder(
-                            //   borderRadius: BorderRadius.circular(100.0)
                           ),
                           prefixIcon: Icon(LineAwesomeIcons.user),
-                          //icon: ,
-                          //contentPadding: EdgeInsets.only(top: 30.0, bottom: 10.0),
                         ),
                       ),
                       SizedBox(width: 30.0, height: 30.0), //this puts space btwn name & major box
-
                       DropdownMenu(
                         label: const Text('Select Major'),
-                        controller: majorController,
+                        initialSelection: user.UserMajor,
+                        controller: editMajorController,
                         expandedInsets: EdgeInsets.zero,
                         requestFocusOnTap: true,
                         enableSearch: true,
@@ -146,12 +155,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         },
                         dropdownMenuEntries: majorOptions.map((e) => DropdownMenuEntry(value: e, label: e)).toList(),
                       ),
-
                       SizedBox(width: 30.0, height: 30.0), //this puts space btwn major & college box
-
                       DropdownMenu(
                         label: const Text('Select College'),
-                        controller: collegeController,
+                        initialSelection: user.UserCollege,
+                        controller: editCollegeController,
                         expandedInsets: EdgeInsets.zero,
                         requestFocusOnTap: true,
                         enableSearch: true,
@@ -162,12 +170,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         },
                         dropdownMenuEntries: collegeOptions.map((e) => DropdownMenuEntry(value: e, label: e)).toList(),
                       ),
-
                       SizedBox(width: 30.0, height: 30.0),
-
                       DropdownMenu(
                         label: const Text('Select Graduation Year'),
-                        controller: gradYearController,
+                        initialSelection: user.UserGradYear,
+                        controller: editGradYearController,
                         expandedInsets: EdgeInsets.zero,
                         requestFocusOnTap: true,
                         enableSearch: true,
@@ -178,12 +185,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         },
                         dropdownMenuEntries: gradYearOptions.map((e) => DropdownMenuEntry(value: e, label: e)).toList(),
                       ),
-
                       SizedBox(width: 30.0, height: 30.0),
-
                       TextFormField(
+                        //initialValue: user.UserBiography,
                         keyboardType: TextInputType.multiline,
-                        controller: bioController,
+                        controller: editBioController,
                         maxLines: 4,
                         decoration: InputDecoration(
                           prefixIcon: Padding(
@@ -195,52 +201,71 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
-
                         ),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 40.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10),
                   child: Column(
                     children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.indigo,
-                          textStyle: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (_) => ProfilePage(),
-                            )
-                          );
-                        },
-                        child: const Text('Cancel',
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.indigo,
-                          textStyle: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                          ),
-                        ),
-                        onPressed: () {
-                          uploadUserInfo();
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (_) => UploadGate(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 10,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.indigo,
+                              textStyle: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                            onPressed: ()  async {
+                              isLoading ? null : saveChanges(user.UserProfilePicture!);
+                            },
+                            child: isLoading
+                              ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
                               )
-                          );
-                        },
-                        child: const Text('Save Changes',
-                        ),
-                      )
+                            :
+                              const Text('Save Changes',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.indigo,
+                              textStyle: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                            onPressed: ()  {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (_) => ProfilePage(),
+                                  )
+                              );
+                            },
+                            child: const Text('Cancel',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

@@ -20,7 +20,7 @@ class _MainPageState extends State<NavBar> {
   final List<Widget> pages = [
     const DiscoverPage(),
     MessagePage(),
-    const ProfilePage(),
+    ProfilePage(),
   ];
 
   int currentPage = 0;

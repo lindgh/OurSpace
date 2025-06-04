@@ -11,15 +11,15 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class StoreData{
 
-  Future<String> uploadImageToStorage(String childName, Uint8List file) async{
-    Reference imageDirectoryReference = _storage.ref().child(childName).child(_auth.currentUser!.uid);
+  Future<String> uploadImageToStorage(Uint8List file) async{
+    Reference imageDirectoryReference = _storage
+        .ref()
+        .child('profile_images')
+        .child(_auth.currentUser!.uid);
 
     UploadTask uploadTask = imageDirectoryReference.putData(file);
     TaskSnapshot snapshot = await uploadTask;
     String downloadURL = await snapshot.ref.getDownloadURL();
-
-    // await imageDirectoryReference.putData(file);
-    // String downloadURL = await imageDirectoryReference.getDownloadURL();
 
     return downloadURL;
   }
@@ -30,17 +30,11 @@ class StoreData{
     required String college,
     required String gradYear,
     required String biography,
-    required Uint8List file,
+    required String imageURL,
   }) async {
     String response = "An error occurred while saving data.";
     try{
       if (name.isNotEmpty && major.isNotEmpty && college.isNotEmpty) {
-        //testing line below
-        String imageURL = 'https://i.imgur.com/aNPydA6.png';
-        if (file.isNotEmpty) {
-          imageURL = await uploadImageToStorage('profile_images', file);
-        }
-        // String imageURL = 'null';
         await _firestore.collection("Users").doc(_auth.currentUser!.uid).update(
             {
               'Name': name,
