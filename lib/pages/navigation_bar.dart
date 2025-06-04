@@ -27,7 +27,7 @@ class _MainPageState extends State<NavBar> {
   final List<Widget> pages = [
     DiscoverPage(),
     MessagePage(),
-    const ProfilePage(),
+    ProfilePage(),
   ];
 
   @override

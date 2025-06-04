@@ -11,7 +11,7 @@ class UploadGate extends StatelessWidget {
 
     if (user == null) return false;
 
-    return user.UserMajor != null && user.UserMajor!.isNotEmpty;
+    return user.UserName != null && user.UserName!.isNotEmpty;
   }
 
 

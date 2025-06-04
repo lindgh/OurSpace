@@ -13,6 +13,8 @@ import '../models/pickImage.dart';
 import '../services/upload/add_data.dart';
 import '../services/upload/upload_gate.dart';
 
+import 'edit_profile.dart';
+
 class CreateProfilePage extends StatefulWidget {
   static route() => MaterialPageRoute(
     builder: (context) => const CreateProfilePage(),
@@ -39,13 +41,19 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
   }
 
   void uploadUserInfo() async {
+    String newImageURL = 'https://i.imgur.com/aNPydA6.png'; //this is default pfp
+
+    if (_userImage != null) {
+      String newImageURL = await StoreData().uploadImageToStorage(_userImage!);
+    }
+
     String response = await StoreData().saveData(
         name: nameController.text,
         major: majorController.text,
         college: collegeController.text,
         gradYear: gradYearController.text,
         biography: bioController.text,
-        file: _userImage!
+        imageURL: newImageURL,
     );
   }
 
@@ -184,7 +192,6 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.indigo,
-
                 textStyle: TextStyle(
                   fontSize: 18,
                   color: Colors.white,
