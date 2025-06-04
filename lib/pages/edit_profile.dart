@@ -80,7 +80,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         return;
       }
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => NavBar(),
+          MaterialPageRoute(builder: (_) => NavBar(index: 2),
           )
       );
     } catch (e) {
@@ -253,7 +253,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             ),
                             onPressed: ()  {
                               Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(builder: (_) => ProfilePage(),
+                                  MaterialPageRoute(builder: (_) => NavBar(index: 2),
                                   )
                               );
                             },

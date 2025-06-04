@@ -35,68 +35,75 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future openDialog(String oldImage) => showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Edit Profile Picture',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Stack(
-              children: <Widget>[
-                _userImage != null ?
-                CircleAvatar(
-                  radius: 100.0,
-                  backgroundImage: MemoryImage(_userImage!),
-                )
-                    :
-                CircleAvatar(
-                  radius: 100.0,
-                  backgroundImage: NetworkImage(oldImage),
-                ),
-                Positioned(
-                  child: IconButton(
-                    onPressed: () {
-                      selectImage();
-                    },
-                    icon: const Icon(Icons.add_a_photo_rounded),
-                    iconSize: 40,
-                    hoverColor: Colors.indigo,
-                    color: Colors.white,
+      builder: (context) {
+        return StatefulBuilder(
+            builder: (context, setState) {
+              return AlertDialog(
+                title: Text('Edit Profile Picture',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  bottom: -4,
-                  left: 140,
                 ),
-              ],
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Save',
-                style: TextStyle(
-                  fontSize: 18,
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Stack(
+                      children: <Widget>[
+                        _userImage != null ?
+                        CircleAvatar(
+                          radius: 100.0,
+                          backgroundImage: MemoryImage(_userImage!),
+                        )
+                            :
+                        CircleAvatar(
+                          radius: 100.0,
+                          backgroundImage: NetworkImage(oldImage),
+                        ),
+                        Positioned(
+                          child: IconButton(
+                            onPressed: () {
+                              selectImage();
+                            },
+                            icon: const Icon(Icons.add_a_photo_rounded),
+                            iconSize: 40,
+                            hoverColor: Colors.indigo,
+                            color: Colors.white,
+                          ),
+                          bottom: -4,
+                          left: 140,
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              )
-          ),
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel',
-                style: TextStyle(
-                  fontSize: 17,
-                ),
-              )
-          ),
-        ],
-      ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Save',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    )
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _userImage = null;
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Cancel',
+                      style: TextStyle(
+                        fontSize: 17,
+                      ),
+                    )
+                  ),
+                ],
+              );
+            }
+        );
+      }
   );
 
 
@@ -226,12 +233,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                   color: Colors.indigo,
                                   size: 25.0,
                                 ),
-                                Text(data['College'],
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    color: Colors.black54,
+                                Flexible(
+                                  child: Text(data['College'],
+                                    softWrap: true,
+                                    //textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.black54,
+                                    ),
                                   ),
                                 ),
+                                // Text(data['College'],
+                                //   style: TextStyle(
+                                //     fontSize: 18.0,
+                                //     color: Colors.black54,
+                                //   ),
+                                // ),
                               ],
                             ),
                             SizedBox(height: 10.0),
@@ -252,7 +269,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 30.0),
+                            SizedBox(height: 20.0),
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(13.0),
