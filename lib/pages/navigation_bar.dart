@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'discover_page.dart';
-import 'logIn_page.dart';
 import 'messages_page.dart';
 import 'profile_page.dart';
 
 class NavBar extends StatefulWidget {
-  static route() => MaterialPageRoute(
-    builder: (context) => const NavBar(),
+  final int index;
+  const NavBar({super.key, this.index = 0});
+
+  static route({int i = 0}) => MaterialPageRoute(
+    builder: (context) => NavBar(index: i),
   );
-  const NavBar({super.key});
 
   @override
   State<NavBar> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<NavBar> {
+  late int currentPage;
+
+  @override
+  void initState() {
+    super.initState();
+    currentPage = widget.index;
+  }
 
   final List<Widget> pages = [
-    const DiscoverPage(),
+    DiscoverPage(),
     MessagePage(),
     ProfilePage(),
   ];
 
-  int currentPage = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

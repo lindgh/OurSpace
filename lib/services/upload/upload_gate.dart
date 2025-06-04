@@ -21,7 +21,7 @@ class UploadGate extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
-          final user = snapshot.data;
+
           return FutureBuilder<bool>(
             future: hasUserData(),
             builder: (context, profileSnapshot) {

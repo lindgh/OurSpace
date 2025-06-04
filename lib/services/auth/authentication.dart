@@ -64,6 +64,8 @@ class authentication {
             'College': null,
             'Graduation Year': null,
             'Biography': null,
+            'inquired_users': [],
+            'matched_users': [],
           }
       );
 
