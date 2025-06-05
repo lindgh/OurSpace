@@ -25,8 +25,11 @@ jobs:
     #  - name: Run analyzer
     #    run: flutter analyze
 
-      - name: Run tests with coverage
-        run: flutter test --coverage
+      - name: Run unit tests
+        run: flutter test test/unit_tests/
+
+      - name: Run widget tests
+        run: flutter test test/widget_tests/
 
       - name: Upload coverage report as artifact
         uses: actions/upload-artifact@v4
