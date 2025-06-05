@@ -6,6 +6,7 @@ import '../services/auth/authentication.dart';
 import '../services/auth/user.dart';
 import 'create_profile.dart';
 import 'dart:typed_data';
+import '../services/upload/add_data.dart';
 
 import 'package:image_picker/image_picker.dart';
 import '../models/pickImage.dart';
@@ -24,20 +25,50 @@ class _ProfilePageState extends State<ProfilePage> {
       .collection("Users")
       .doc(_auth.currentUser!.uid)
       .snapshots();
-  Uint8List? _userImage;
 
-  void selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
-    setState(() {
-      _userImage = img;
-    });
+  Uint8List? _userImage;
+  String? oldUserImage;
+  String? userName;
+  String? userMajor;
+  String? userCollege;
+  String? userGradYear;
+  String? userBio;
+
+  void uploadNewImage() async {
+    String newImageURL = oldUserImage!; //this is old pfp
+
+    if (_userImage != null) {
+      newImageURL = await StoreData().uploadImageToStorage(_userImage!);
+    }
+
+    String response = await StoreData().saveData(
+      name: userName!,
+      major: userMajor!,
+      college: userCollege!,
+      gradYear: userGradYear!,
+      biography: userBio!,
+      imageURL: newImageURL,
+    );
+
+    setState(() {});
+
   }
 
-  Future openDialog(String oldImage) => showDialog(
+  Future<Uint8List?> selectImage() async {
+    final img = await pickImage(ImageSource.gallery);
+    if (img != null) {
+      return img;
+    }
+    return null;
+  }
+
+  Future openDialog()
+  => showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(
             builder: (context, setState) {
+              Uint8List? localImage = _userImage;
               return AlertDialog(
                 title: Text('Edit Profile Picture',
                   textAlign: TextAlign.center,
@@ -50,20 +81,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     Stack(
                       children: <Widget>[
-                        _userImage != null ?
                         CircleAvatar(
                           radius: 100.0,
-                          backgroundImage: MemoryImage(_userImage!),
-                        )
-                            :
-                        CircleAvatar(
-                          radius: 100.0,
-                          backgroundImage: NetworkImage(oldImage),
+                          backgroundImage: localImage != null
+                          ? MemoryImage(localImage)
+                          : NetworkImage(oldUserImage!) as ImageProvider,
                         ),
                         Positioned(
                           child: IconButton(
-                            onPressed: () {
-                              selectImage();
+                            onPressed: () async {
+                              final selectedImage = await selectImage();
+                              if (selectedImage != null) {
+                                setState(() {
+                                  _userImage = selectedImage;
+                                });
+                              }
                             },
                             icon: const Icon(Icons.add_a_photo_rounded),
                             iconSize: 40,
@@ -80,6 +112,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 actions: [
                   TextButton(
                     onPressed: () {
+                      uploadNewImage();
+                      _userImage = null;
                       Navigator.of(context).pop();
                     },
                     child: Text('Save',
@@ -106,7 +140,6 @@ class _ProfilePageState extends State<ProfilePage> {
       }
   );
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,6 +156,14 @@ class _ProfilePageState extends State<ProfilePage> {
             }
             Map<String, dynamic> data =
             snapshot.data!.data()! as Map<String, dynamic>;
+
+            oldUserImage = data['Profile Picture'];
+            userName = data['Name'];
+            userMajor = data['Major'];
+            userCollege = data['College'];
+            userGradYear = data['Graduation Year'];
+            userBio = data['Biography'];
+
             return Scaffold(
               backgroundColor: Colors.white,
               body: Center(
@@ -150,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   Positioned(
                                     child: IconButton(
                                       onPressed: () {
-                                        openDialog(data['Profile Picture']);
+                                        openDialog();
                                       },
                                       icon: const Icon(Icons.add_a_photo_rounded),
                                       iconSize: 40,
