@@ -99,10 +99,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return FutureBuilder<UserData?>(
         future: UserData.fetchCurrentUser(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          else if (snapshot.hasError) {
+          if (snapshot.hasError) {
             return const Center(child: Text("Error loading user data"));
           }
           else if (!snapshot.hasData) {
