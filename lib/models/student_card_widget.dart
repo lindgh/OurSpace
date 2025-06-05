@@ -82,10 +82,16 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                   child: Stack(
                     fit: StackFit.loose,
                     children: <Widget>[
-                      Positioned.fill(child: Image.network(
+                      Positioned.fill(child: student.profileImagePath.isEmpty
+                          ? Image.asset(
+                        'assets/images/placeholder_meg.jpg', // Make sure this image is in your assets
+                        fit: BoxFit.fitHeight,
+                      )
+                          : Image.network(
                         student.profileImagePath,
-                        fit:BoxFit.fitHeight,
-                      )),
+                        fit: BoxFit.fitHeight,
+                      ),
+                      ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(

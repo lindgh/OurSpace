@@ -6,10 +6,18 @@ import '../models/student_card_model.dart';
 import '../services/matching/matchingAlgorithm.dart';
 
 class DiscoverPage extends StatefulWidget {
+  final Future<List<StudentCard>> Function()? getAllUserDataFunc;
+  final Future<List<StudentCard>> Function(List<StudentCard>)? sortFunc;
+
+  DiscoverPage({
+    super.key,
+    this.getAllUserDataFunc,
+    this.sortFunc,
+  });
+
   static route() => MaterialPageRoute(
     builder: (context) => DiscoverPage(),
   );
-  DiscoverPage({super.key});
 
   @override
   State<DiscoverPage> createState() => _DiscoverPageState();
@@ -25,8 +33,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
   }
 
   Future<void> loadUserData() async {
-    List<StudentCard> unsortedList = await getAllUserData();
-    _currentCards = await MatchingAlgorithm.sortedStudents(otherUsers: unsortedList);
+    final othersList = await (widget.getAllUserDataFunc?.call() ?? getAllUserData());
+    _currentCards = await (widget.sortFunc?.call(othersList) ??
+        MatchingAlgorithm.sortedStudents(otherUsers: othersList));
     setState(() {});
   }
 
@@ -39,16 +48,15 @@ class _DiscoverPageState extends State<DiscoverPage> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: SafeArea(
-
         child: _currentCards == null
             ? Center(child: CircularProgressIndicator())
             : _currentCards!.isEmpty
             ? Center(child: CircularProgressIndicator()) //child: Text('No users found.'))
             : CardSwiper(
+              numberOfCardsDisplayed: (_currentCards?.length ?? 0).clamp(1, _currentCards?.length ?? 1),
               threshold: 70,
           cards: _currentCards
-          !.map((student) => StudentCardWidget(student: student))
-              .toList(),
+            !.map((student) => StudentCardWidget(student: student)).toList(),
           onEnd: _onEnd,
         ),
       ),
