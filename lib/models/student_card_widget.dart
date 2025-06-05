@@ -47,7 +47,7 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                             TextSpan(text: student.UserCollege, style: const TextStyle(fontSize: 20, color: Colors.black45)),
 
                             TextSpan(text: "\n"),
-                            WidgetSpan(child: Icon(Icons.calendar_month, color: Colors.indigo)),
+                            WidgetSpan(child: Icon(Icons.school, color: Colors.indigo)),
                             TextSpan(text: "  "),
                             TextSpan(text: student.UserGradYear, style: const TextStyle(fontSize: 20, color: Colors.black45)),
 
@@ -122,7 +122,7 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
             onPointerDown: (event) {
               _startX = event.position.dx;
             },
-            onPointerUp: (event) {
+            onPointerUp: (event) async {
               final endX = event.position.dx;
               final swipeDistance = endX - _startX;
 
@@ -130,9 +130,27 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                 debugPrint('NOT INTERESTED');
               } else if (swipeDistance > 90) {
                 debugPrint('INTERESTED, uid: ${student.uid}');
-                addInquiredUser(student.uid);
+
+                bool isMatch = await addInquiredUser(student.uid);
+
+                if (isMatch) {
+                  showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: const Text("It's a Match! 😊"),
+                      content: Text("You and ${student.UserName} have matched!"),
+                      actions: [
+                        TextButton(
+                          child: const Text("Continue"),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                      ],
+                    ),
+                  );
+                }
               }
             },
+
             child: Container(),
           ),
         ),
