@@ -20,10 +20,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: StudentCardWidget(
-            student: student,
-            isTest: true,
-          ),
+          body: StudentCardWidget(student: student),
         ),
       ),
     );
@@ -40,10 +37,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: StudentCardWidget(
-            student: student,
-            isTest: true,
-          ),
+          body: StudentCardWidget(student: student),
         ),
       ),
     );

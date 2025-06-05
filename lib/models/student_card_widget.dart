@@ -4,16 +4,8 @@ import '../services/auth/user.dart';
 
 class StudentCardWidget extends StatefulWidget {
   final StudentCard student;
-  final void Function(String)? onSwipeOverride;
-  final bool isTest;
 
-  const StudentCardWidget({
-    super.key,
-    required this.student,
-    this.onSwipeOverride,
-    this.isTest = false,
-  });
-
+  const StudentCardWidget({super.key, required this.student});
 
   @override
   State<StudentCardWidget> createState() => _StudentCardWidgetState();
@@ -43,26 +35,26 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       RichText(
-                        text: TextSpan(
-                          children: [
-                            WidgetSpan(child: Icon(Icons.menu_book, color: Colors.indigo, size: 30)),
-                            TextSpan(text: "  "),
-                            TextSpan(text: student.UserMajor, style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold, color: Colors.black)),
+                          text: TextSpan(
+                              children: [
+                                WidgetSpan(child: Icon(Icons.menu_book, color: Colors.indigo, size: 30)),
+                                TextSpan(text: "  "),
+                                TextSpan(text: student.UserMajor, style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold, color: Colors.black)),
 
-                            TextSpan(text: "\n"),
-                            WidgetSpan(child: Icon(Icons.location_on, color: Colors.indigo)),
-                            TextSpan(text: "  "),
-                            TextSpan(text: student.UserCollege, style: const TextStyle(fontSize: 20, color: Colors.black45)),
+                                TextSpan(text: "\n"),
+                                WidgetSpan(child: Icon(Icons.location_on, color: Colors.indigo)),
+                                TextSpan(text: "  "),
+                                TextSpan(text: student.UserCollege, style: const TextStyle(fontSize: 20, color: Colors.black45)),
 
-                            TextSpan(text: "\n"),
-                            WidgetSpan(child: Icon(Icons.school, color: Colors.indigo)),
-                            TextSpan(text: "  "),
-                            TextSpan(text: student.UserGradYear, style: const TextStyle(fontSize: 20, color: Colors.black45)),
+                                TextSpan(text: "\n"),
+                                WidgetSpan(child: Icon(Icons.school, color: Colors.indigo)),
+                                TextSpan(text: "  "),
+                                TextSpan(text: student.UserGradYear, style: const TextStyle(fontSize: 20, color: Colors.black45)),
 
-                            TextSpan(text: "\n\n"),
-                            TextSpan(text: student.UserBio, style: const TextStyle(fontSize: 23, color: Colors.black)),
-                          ]
-                        )
+                                TextSpan(text: "\n\n"),
+                                TextSpan(text: student.UserBio, style: const TextStyle(fontSize: 23, color: Colors.black)),
+                              ]
+                          )
                       ),
 
                     ],
@@ -74,8 +66,6 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
         ),
       ),
     };
-
-    final isTest = WidgetsBinding.instance.runtimeType.toString().contains('TestWidgetsFlutterBinding');
 
     return Stack(
       children: [
@@ -92,14 +82,15 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                   child: Stack(
                     fit: StackFit.loose,
                     children: <Widget>[
-                      Positioned.fill(
-                        child: isTest
-                            ? const Placeholder()
-                            : Image.network(
-                          student.profileImagePath,
-                          fit: BoxFit.fitHeight,
-                          errorBuilder: (context, error, stackTrace) => const Placeholder(),
-                        ),
+                      Positioned.fill(child: student.profileImagePath.isEmpty
+                          ? Image.asset(
+                        'assets/images/placeholder_meg.jpg', // Make sure this image is in your assets
+                        fit: BoxFit.fitHeight,
+                      )
+                          : Image.network(
+                        student.profileImagePath,
+                        fit: BoxFit.fitHeight,
+                      ),
                       ),
                       Align(
                         alignment: Alignment.bottomCenter,
@@ -144,34 +135,35 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
               if (swipeDistance < -90) {
                 debugPrint('NOT INTERESTED');
               } else if (swipeDistance > 90) {
-                debugPrint('INTERESTED');
+                  debugPrint('INTERESTED');
 
-                final isTest = WidgetsBinding.instance.runtimeType.toString().contains('TestWidgetsFlutterBinding');
-                if (isTest) return;
+                  final isTest = WidgetsBinding.instance.runtimeType.toString().contains('TestWidgetsFlutterBinding');
+                  if (isTest) return;
 
-                bool isMatch = await addInquiredUser(student.uid);
+                  bool isMatch = await addInquiredUser(student.uid);
 
-                if (isMatch) {
-                  showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                      title: const Text("It's a Match! 😊"),
-                      content: Text("You and ${student.UserName} have matched!"),
-                      actions: [
-                        TextButton(
-                          child: const Text("Continue"),
-                          onPressed: () => Navigator.of(context).pop(),
+                  if (isMatch) {
+                      showDialog(
+                        context: context,
+                          builder: (_) => AlertDialog(
+                            title: const Text("It's a Match! 😊"),
+                            content: Text("You and ${student.UserName} have matched!"),
+                            actions: [
+                            TextButton(
+                            child: const Text("Continue"),
+                            onPressed: () => Navigator.of(context).pop(),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
+                      );
+                  }
                 }
-              }
-            },
+
+          },
+
             child: Container(),
           ),
         ),
-
       ],
     );
   }
