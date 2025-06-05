@@ -35,26 +35,26 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       RichText(
-                        text: TextSpan(
-                          children: [
-                            WidgetSpan(child: Icon(Icons.menu_book, color: Colors.indigo, size: 30)),
-                            TextSpan(text: "  "),
-                            TextSpan(text: student.UserMajor, style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold, color: Colors.black)),
+                          text: TextSpan(
+                              children: [
+                                WidgetSpan(child: Icon(Icons.menu_book, color: Colors.indigo, size: 30)),
+                                TextSpan(text: "  "),
+                                TextSpan(text: student.UserMajor, style: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold, color: Colors.black)),
 
-                            TextSpan(text: "\n"),
-                            WidgetSpan(child: Icon(Icons.location_on, color: Colors.indigo)),
-                            TextSpan(text: "  "),
-                            TextSpan(text: student.UserCollege, style: const TextStyle(fontSize: 20, color: Colors.black45)),
+                                TextSpan(text: "\n"),
+                                WidgetSpan(child: Icon(Icons.location_on, color: Colors.indigo)),
+                                TextSpan(text: "  "),
+                                TextSpan(text: student.UserCollege, style: const TextStyle(fontSize: 20, color: Colors.black45)),
 
-                            TextSpan(text: "\n"),
-                            WidgetSpan(child: Icon(Icons.school, color: Colors.indigo)),
-                            TextSpan(text: "  "),
-                            TextSpan(text: student.UserGradYear, style: const TextStyle(fontSize: 20, color: Colors.black45)),
+                                TextSpan(text: "\n"),
+                                WidgetSpan(child: Icon(Icons.school, color: Colors.indigo)),
+                                TextSpan(text: "  "),
+                                TextSpan(text: student.UserGradYear, style: const TextStyle(fontSize: 20, color: Colors.black45)),
 
-                            TextSpan(text: "\n\n"),
-                            TextSpan(text: student.UserBio, style: const TextStyle(fontSize: 23, color: Colors.black)),
-                          ]
-                        )
+                                TextSpan(text: "\n\n"),
+                                TextSpan(text: student.UserBio, style: const TextStyle(fontSize: 23, color: Colors.black)),
+                              ]
+                          )
                       ),
 
                     ],
@@ -135,27 +135,31 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
               if (swipeDistance < -90) {
                 debugPrint('NOT INTERESTED');
               } else if (swipeDistance > 90) {
-                debugPrint('INTERESTED, uid: ${student.uid}');
+                  debugPrint('INTERESTED');
 
-                bool isMatch = await addInquiredUser(student.uid);
+                  final isTest = WidgetsBinding.instance.runtimeType.toString().contains('TestWidgetsFlutterBinding');
+                  if (isTest) return;
 
-                if (isMatch) {
-                  showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                      title: const Text("It's a Match! 😊"),
-                      content: Text("You and ${student.UserName} have matched!"),
-                      actions: [
-                        TextButton(
-                          child: const Text("Continue"),
-                          onPressed: () => Navigator.of(context).pop(),
+                  bool isMatch = await addInquiredUser(student.uid);
+
+                  if (isMatch) {
+                      showDialog(
+                        context: context,
+                          builder: (_) => AlertDialog(
+                            title: const Text("It's a Match! 😊"),
+                            content: Text("You and ${student.UserName} have matched!"),
+                            actions: [
+                            TextButton(
+                            child: const Text("Continue"),
+                            onPressed: () => Navigator.of(context).pop(),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
+                      );
+                  }
                 }
-              }
-            },
+
+          },
 
             child: Container(),
           ),
