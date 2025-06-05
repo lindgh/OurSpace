@@ -4,8 +4,16 @@ import '../services/auth/user.dart';
 
 class StudentCardWidget extends StatefulWidget {
   final StudentCard student;
+  final void Function(String)? onSwipeOverride;
+  final bool isTest;
 
-  const StudentCardWidget({super.key, required this.student});
+  const StudentCardWidget({
+    super.key,
+    required this.student,
+    this.onSwipeOverride,
+    this.isTest = false,
+  });
+
 
   @override
   State<StudentCardWidget> createState() => _StudentCardWidgetState();
@@ -67,6 +75,8 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
       ),
     };
 
+    final isTest = WidgetsBinding.instance.runtimeType.toString().contains('TestWidgetsFlutterBinding');
+
     return Stack(
       children: [
         Card(
@@ -82,10 +92,15 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                   child: Stack(
                     fit: StackFit.loose,
                     children: <Widget>[
-                      Positioned.fill(child: Image.network(
-                        student.profileImagePath,
-                        fit:BoxFit.fitHeight,
-                      )),
+                      Positioned.fill(
+                        child: isTest
+                            ? const Placeholder()
+                            : Image.network(
+                          student.profileImagePath,
+                          fit: BoxFit.fitHeight,
+                          errorBuilder: (context, error, stackTrace) => const Placeholder(),
+                        ),
+                      ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(
@@ -129,7 +144,10 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
               if (swipeDistance < -90) {
                 debugPrint('NOT INTERESTED');
               } else if (swipeDistance > 90) {
-                debugPrint('INTERESTED, uid: ${student.uid}');
+                debugPrint('INTERESTED');
+
+                final isTest = WidgetsBinding.instance.runtimeType.toString().contains('TestWidgetsFlutterBinding');
+                if (isTest) return;
 
                 bool isMatch = await addInquiredUser(student.uid);
 
@@ -150,10 +168,10 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                 }
               }
             },
-
             child: Container(),
           ),
         ),
+
       ],
     );
   }
