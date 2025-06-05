@@ -47,7 +47,7 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
                             TextSpan(text: student.UserCollege, style: const TextStyle(fontSize: 20, color: Colors.black45)),
 
                             TextSpan(text: "\n"),
-                            WidgetSpan(child: Icon(Icons.calendar_month, color: Colors.indigo)),
+                            WidgetSpan(child: Icon(Icons.school, color: Colors.indigo)),
                             TextSpan(text: "  "),
                             TextSpan(text: student.UserGradYear, style: const TextStyle(fontSize: 20, color: Colors.black45)),
 
