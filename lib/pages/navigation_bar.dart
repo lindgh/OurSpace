@@ -5,7 +5,9 @@ import 'profile_page.dart';
 
 class NavBar extends StatefulWidget {
   final int index;
-  const NavBar({super.key, this.index = 0});
+  final List<Widget>? overridePages;
+
+  const NavBar({super.key, this.index = 0, this.overridePages});
 
   static route({int i = 0}) => MaterialPageRoute(
     builder: (context) => NavBar(index: i),
@@ -17,18 +19,19 @@ class NavBar extends StatefulWidget {
 
 class _MainPageState extends State<NavBar> {
   late int currentPage;
+  late final List<Widget> pages;
 
   @override
   void initState() {
     super.initState();
     currentPage = widget.index;
+    pages = widget.overridePages ??
+        [
+          DiscoverPage(),
+          MessagePage(),
+          ProfilePage(),
+        ];
   }
-
-  final List<Widget> pages = [
-    DiscoverPage(),
-    MessagePage(),
-    ProfilePage(),
-  ];
 
   @override
   Widget build(BuildContext context) {
