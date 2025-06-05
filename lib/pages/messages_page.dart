@@ -63,11 +63,12 @@ class MessagePage extends StatelessWidget {
     // SHOW ONLY RELEVANT USERS
     if (userData["email"] != _authentication.getCurrentUser()!.email) {
       return UserTile(
-        text: userData["email"],
+        text: userData["UserName"],
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => ChatPage(
             receiverEmail: userData["email"],
             receiverID: userData["uid"],
+            receiverName: userData["UserName"],
           ),
           ),
           );

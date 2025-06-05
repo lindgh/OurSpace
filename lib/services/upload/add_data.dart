@@ -44,6 +44,13 @@ class StoreData{
               'Biography': biography,
               'Profile Picture': imageURL,
             });
+        await _firestore.collection("ChatClient").doc(_auth.currentUser!.uid).update(
+            {
+              'uid': _auth.currentUser!.uid,
+              'email': _auth.currentUser!.email,
+              'UserName' : name,
+            }
+        );
         response = "Data save successful.";
       }
     }

@@ -37,6 +37,7 @@ class authentication {
           {
             'uid': userCredential.user!.uid,
             'email': email,
+            'UserName' : null,
           }
       );
 

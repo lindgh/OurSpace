@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../models/message.dart';
+import '../auth/user.dart';
 
 class ChatService {
 
@@ -20,6 +21,9 @@ class ChatService {
   // send message
   Future<void> sendMessage(String receiverID, message) async {
     // get user info
+    final currentUser = await UserData.fetchCurrentUser();
+    final String userName = currentUser!.UserName!;
+
     final String currentUserID = _auth.currentUser!.uid;
     final String currentUserEmail = _auth.currentUser!.email!;
     final Timestamp timestamp = Timestamp.now();
@@ -27,6 +31,7 @@ class ChatService {
     // write a message
     Message newMessage = Message(
         senderID: currentUserID,
+        senderName: userName,
         senderEmail: currentUserEmail,
         receiverID: receiverID,
         message: message,

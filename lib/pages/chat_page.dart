@@ -8,11 +8,13 @@ import 'package:OurSpace/components/custom_textfield.dart';
 class ChatPage extends StatelessWidget {
   final String receiverEmail;
   final String receiverID;
+  final String receiverName;
 
   ChatPage({
     super.key,
     required this.receiverEmail,
     required this.receiverID,
+    required this.receiverName,
   });
 
   final TextEditingController _messageController = TextEditingController();
@@ -30,7 +32,7 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text (receiverEmail),
+      appBar: AppBar(title: Text (receiverName),
       backgroundColor: Colors.transparent,
       foregroundColor: Colors.grey,
       elevation: 0,
