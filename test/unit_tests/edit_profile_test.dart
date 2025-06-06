@@ -1,8 +1,6 @@
 import 'dart:typed_data';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import '../../lib/services/upload/add_data.dart';
 import '../mocks.mocks.dart';
 
 void main() {
@@ -13,8 +11,6 @@ void main() {
     mockStoreData = MockStoreData();
     fakeImage = Uint8List.fromList([0, 1, 2, 3]);
   });
-
-
 
   test('uploadEditedUserInfo uploads image and saves data', () async {
 

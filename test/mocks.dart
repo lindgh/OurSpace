@@ -1,3 +1,4 @@
+import 'package:OurSpace/services/auth/authentication.dart';
 import 'package:mockito/annotations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,5 +15,9 @@ import '../lib/services/upload/add_data.dart';
   DocumentReference<Map<String, dynamic>>,
   CollectionReference<Map<String, dynamic>>,
   StoreData,
+  ChatService,
+  authentication,
+  QuerySnapshot,
+  QueryDocumentSnapshot,
 ])
 void main() {}

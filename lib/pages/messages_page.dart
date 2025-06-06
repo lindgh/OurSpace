@@ -69,9 +69,10 @@ class MessagePage extends StatelessWidget {
             receiverEmail: userData["email"],
             receiverID: userData["uid"],
             receiverName: userData["UserName"],
-          ),
-          ),
-          );
+            chatService: _chatService,
+            auth: _authentication,
+            ),
+          ));
         },
       );
     } else {
