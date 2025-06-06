@@ -2,7 +2,7 @@ import 'package:OurSpace/components/chat_bubble.dart';
 import 'package:OurSpace/services/auth/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../services/chat/chat_services.dart';
+import 'package:OurSpace/services/chat/chat_services.dart';
 import 'package:OurSpace/components/custom_textfield.dart';
 
 class ChatPage extends StatelessWidget {

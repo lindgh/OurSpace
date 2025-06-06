@@ -1,7 +1,6 @@
 //import 'dart:nativewrappers/_internal/vm/lib/typed_data_patch.dart';
 import 'dart:convert';
 import 'dart:typed_data';
-
 //import 'package:OurSpace/models/pickImage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

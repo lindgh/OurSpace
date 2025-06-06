@@ -2,7 +2,7 @@ import 'package:OurSpace/pages/chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:OurSpace/services/chat/chat_services.dart';
 import 'package:OurSpace/components/user_tile.dart';
-import '../services/auth/authentication.dart';
+import 'package:OurSpace/services/auth/authentication.dart';
 import '../services/auth/user.dart';
 
 class MessagePage extends StatelessWidget {
