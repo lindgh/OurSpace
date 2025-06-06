@@ -32,14 +32,13 @@ class authentication {
           password: password,
       );
 
-      // messages
-      _firestore.collection("ChatClient").doc(userCredential.user!.uid).set(
-          {
-            'uid': userCredential.user!.uid,
-            'email': email,
-            'UserName' : null,
-          }
-      );
+      // // messages
+      // _firestore.collection("ChatClient").doc(userCredential.user!.uid).set(
+      //     {
+      //       'uid': userCredential.user!.uid,
+      //       'email': email,
+      //     }
+      // );
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -60,6 +59,7 @@ class authentication {
           {
             'uid': userCredential.user!.uid,
             'email': email,
+            'UserName' : null,
           }
       );
 
