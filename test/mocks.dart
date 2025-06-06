@@ -17,6 +17,7 @@ import '../lib/services/upload/add_data.dart';
   StoreData,
   ChatService,
   authentication,
+  Query,
   QuerySnapshot,
   QueryDocumentSnapshot,
 ])

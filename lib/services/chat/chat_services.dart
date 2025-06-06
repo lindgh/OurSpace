@@ -4,12 +4,17 @@ import '../../models/message.dart';
 import '../auth/user.dart';
 
 class ChatService {
+  final FirebaseFirestore firestore;
+  final FirebaseAuth auth;
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  ChatService({
+    FirebaseFirestore? firestore,
+    FirebaseAuth? auth,
+}): firestore = firestore ?? FirebaseFirestore.instance,
+  auth = auth ?? FirebaseAuth.instance;
 
   Stream<List<Map<String,dynamic>>> getUsersStream() {
-    return _firestore.collection("ChatClient").snapshots().map((snapshot) {
+    return firestore.collection("ChatClient").snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         final user = doc.data();
 
@@ -19,13 +24,15 @@ class ChatService {
   }
 
   // send message
-  Future<void> sendMessage(String receiverID, message) async {
+  Future<void> sendMessage(String receiverID, message, {
+    Future<UserData?> Function()? fetchUser,
+  }) async {
     // get user info
-    final currentUser = await UserData.fetchCurrentUser();
+    final currentUser = await (fetchUser?.call() ?? UserData.fetchCurrentUser());
     final String userName = currentUser!.UserName!;
 
-    final String currentUserID = _auth.currentUser!.uid;
-    final String currentUserEmail = _auth.currentUser!.email!;
+    final String currentUserID = auth.currentUser!.uid;
+    final String currentUserEmail = auth.currentUser!.email!;
     final Timestamp timestamp = Timestamp.now();
 
     // write a message
@@ -44,7 +51,7 @@ class ChatService {
     String chatRoomID = ids.join('_');
 
     // send new message to firebase
-    await _firestore
+    await firestore
         .collection("chat_rooms")
         .doc(chatRoomID)
         .collection("messages")
@@ -57,7 +64,7 @@ class ChatService {
     ids.sort();
     String chatRoomID = ids.join('_');
 
-    return _firestore
+    return firestore
         .collection("chat_rooms")
         .doc(chatRoomID)
         .collection("messages")
