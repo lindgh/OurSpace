@@ -14,7 +14,8 @@ void main() {
     fakeImage = Uint8List.fromList([0, 1, 2, 3]);
   });
 
-  test('uploadEditedUserInfo uploads image and saves data', () async {
+
+  test('uploadUserInfo uploads image and saves data', () async {
 
     final newImageURL = "http://fakeurl.com/image.jpg";
 

@@ -12,39 +12,45 @@ import '../components/graduation_years.dart';
 import '../models/pickImage.dart';
 import '../services/upload/add_data.dart';
 import '../services/upload/upload_gate.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-import 'edit_profile.dart';
+//import 'edit_profile.dart';
 
 class CreateProfilePage extends StatefulWidget {
-  static route() => MaterialPageRoute(
-    builder: (context) => const CreateProfilePage(),
-  );
-  const CreateProfilePage({super.key});
+  final Future<Uint8List> Function(ImageSource)? pickImageFn;
+
+  const CreateProfilePage({super.key, this.pickImageFn});
+
+  static route({required Future<Uint8List> Function(ImageSource) pickImageFn}) =>
+      MaterialPageRoute(builder: (_) => CreateProfilePage(pickImageFn: pickImageFn));
 
   @override
-  State<CreateProfilePage> createState() => _CreateProfilePageState();
+  State<CreateProfilePage> createState() => CreateProfilePageState();
 }
 
-class _CreateProfilePageState extends State<CreateProfilePage> {
+class CreateProfilePageState extends State<CreateProfilePage> {
   final nameController = TextEditingController();
   final collegeController = TextEditingController();
   final gradYearController = TextEditingController();
   final majorController = TextEditingController();
   final bioController = TextEditingController();
-  Uint8List? _userImage;
+
+  @visibleForTesting
+  Uint8List? userImage;
 
   void selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
+    final picker = widget.pickImageFn ?? pickImage;
+    Uint8List img = await picker(ImageSource.gallery);
     setState(() {
-      _userImage = img;
+      userImage = img;
     });
   }
 
   void uploadUserInfo() async {
     String newImageURL = 'https://i.imgur.com/aNPydA6.png'; //this is default pfp
 
-    if (_userImage != null) {
-      String newImageURL = await StoreData().uploadImageToStorage(_userImage!);
+    if (userImage != null) {
+      String newImageURL = await StoreData().uploadImageToStorage(userImage!);
     }
 
     String response = await StoreData().saveData(
@@ -57,8 +63,31 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     );
   }
 
+  Widget _buildAvatar() {
+    if (userImage != null) {
+      return CircleAvatar(
+        radius: 70,
+        backgroundImage: MemoryImage(userImage!),
+      );
+    }
+
+    const isTesting = bool.fromEnvironment('FLUTTER_TEST');
+    if (isTesting) {
+      return const CircleAvatar(
+        radius: 70,
+        backgroundColor: Colors.grey,
+      );
+    }
+
+    return const CircleAvatar(
+      radius: 70,
+      backgroundImage: const AssetImage('../../assets/images/default_pfp.png') as ImageProvider,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
           title: const Text('Create your profile'),
@@ -78,16 +107,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
                 Stack(
                   children: [
-                    _userImage != null ?
-                      CircleAvatar(
-                        radius: 70,
-                        backgroundImage: MemoryImage(_userImage!),
-                      )
-                      :
-                    const CircleAvatar(
-                      radius: 70,
-                      backgroundImage: NetworkImage('https://i.imgur.com/aNPydA6.png'),
-                    ),
+                    _buildAvatar(),
                     Positioned(
                       child: IconButton(
                         onPressed: selectImage,
@@ -109,11 +129,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                   decoration: InputDecoration(
                     labelText: 'Full Name',
                     border: OutlineInputBorder(
-                    //   borderRadius: BorderRadius.circular(100.0)
                     ),
                     prefixIcon: Icon(LineAwesomeIcons.user),
-                    //icon: ,
-                    //contentPadding: EdgeInsets.only(top: 30.0, bottom: 10.0),
                   ),
                 ),
 

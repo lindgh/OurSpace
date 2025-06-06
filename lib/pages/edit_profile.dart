@@ -22,36 +22,42 @@ import '../services/auth/user.dart';
 import 'create_profile.dart';
 
 class EditProfilePage extends StatefulWidget {
-  static route() => MaterialPageRoute(
-    builder: (context) => const EditProfilePage(),
-  );
-  const EditProfilePage({super.key});
+  final Future<Uint8List> Function(ImageSource)? pickImageFn;
+
+  const EditProfilePage({super.key, this.pickImageFn});
+
+  static route({required Future<Uint8List> Function(ImageSource) pickImageFn}) =>
+      MaterialPageRoute(builder: (_) => EditProfilePage(pickImageFn: pickImageFn));
 
   @override
-  State<EditProfilePage> createState() => _EditProfilePageState();
+  State<EditProfilePage> createState() => EditProfilePageState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class EditProfilePageState extends State<EditProfilePage> {
 
   var editNameController = TextEditingController();
   final editCollegeController = TextEditingController();
   final editGradYearController = TextEditingController();
   final editMajorController = TextEditingController();
   var editBioController = TextEditingController();
-  Uint8List? _userImage;
+
+  @visibleForTesting
+  Uint8List? userImage;
+
   bool isLoading = false;
 
   void selectEditedImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
+    final picker = widget.pickImageFn ?? pickImage;
+    Uint8List img = await picker(ImageSource.gallery);
     setState(() {
-      _userImage = img;
+      userImage = img;
     });
   }
 
   Future<String> uploadEditedUserInfo(String currentProfilePicture) async {
     String newImageURL = currentProfilePicture;
-    if (_userImage != null) {
-      newImageURL = await StoreData().uploadImageToStorage(_userImage!);
+    if (userImage != null) {
+      newImageURL = await StoreData().uploadImageToStorage(userImage!);
     }
     String response = await StoreData().saveData(
         name: editNameController.text,
