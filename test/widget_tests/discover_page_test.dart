@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:OurSpace/models/student_card_model.dart';
 import 'package:OurSpace/pages/discover_page.dart';
 

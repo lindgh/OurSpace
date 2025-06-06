@@ -45,12 +45,17 @@ class UserData {
     );
   }
 
-  static Future<UserData?> fetchCurrentUser() async {
+  static Future<UserData?> fetchCurrentUser({
+    FirebaseAuth? auth,
+    FirebaseFirestore? firestore,
+}) async {
+    auth ??= FirebaseAuth.instance;
+    firestore ??= FirebaseFirestore.instance;
     try {
-      final user = FirebaseAuth.instance.currentUser;
+      final user = auth.currentUser;
       if (user == null) return null;
 
-      final doc = await FirebaseFirestore.instance
+      final doc = await firestore
           .collection('Users')
           .doc(user.uid)
           .get();
@@ -65,14 +70,19 @@ class UserData {
   }
 }
 
-Future<bool> addInquiredUser(String swipedUserId) async {
-  final currentUser = FirebaseAuth.instance.currentUser;
+Future<bool> addInquiredUser(String swipedUserId, {
+  FirebaseAuth? auth,
+  FirebaseFirestore? firestore,
+}) async {
+  auth ??= FirebaseAuth.instance;
+  firestore ??= FirebaseFirestore.instance;
+
+  final currentUser = auth.currentUser;
   if (currentUser == null) return false;
 
-  final userDoc = FirebaseFirestore.instance.collection('Users').doc(currentUser.uid);
-  final swipedDoc = FirebaseFirestore.instance.collection('Users').doc(swipedUserId);
+  final userDoc = firestore.collection('Users').doc(currentUser.uid);
+  final swipedDoc = firestore.collection('Users').doc(swipedUserId);
 
-  final currentSnapshot = await userDoc.get();
   final swipedSnapshot = await swipedDoc.get();
 
   List<dynamic> swipedInquired = swipedSnapshot['inquired_users'] ?? [];
