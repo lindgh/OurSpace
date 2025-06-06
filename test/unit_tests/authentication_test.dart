@@ -1,7 +1,7 @@
 import 'package:OurSpace/services/auth/authentication.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '../mocks.mocks.dart';
 import 'package:mockito/mockito.dart';
+import '../mocks.mocks.dart';
 
 void main() {
   late MockFirebaseAuth mockAuth;

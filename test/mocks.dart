@@ -1,7 +1,6 @@
 import 'package:mockito/annotations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:OurSpace/services/chat/chat_services.dart';
 
 // put the class that you want to mock here
 @GenerateMocks([
@@ -9,8 +8,8 @@ import 'package:OurSpace/services/chat/chat_services.dart';
   User,
   UserCredential,
   FirebaseFirestore,
-  CollectionReference,
-  DocumentReference,
-  DocumentSnapshot,
+  DocumentSnapshot<Map<String, dynamic>>,
+  DocumentReference<Map<String, dynamic>>,
+  CollectionReference<Map<String, dynamic>>,
 ])
 void main() {}
