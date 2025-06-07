@@ -4,8 +4,9 @@ import '../services/auth/user.dart';
 
 class StudentCardWidget extends StatefulWidget {
   final StudentCard student;
+  final Future<bool> Function(String)? addInquiredUserFn;
 
-  const StudentCardWidget({super.key, required this.student});
+  const StudentCardWidget({super.key, required this.student,this.addInquiredUserFn});
 
   @override
   State<StudentCardWidget> createState() => _StudentCardWidgetState();
@@ -137,10 +138,9 @@ class _StudentCardWidgetState extends State<StudentCardWidget> {
               } else if (swipeDistance > 90) {
                   debugPrint('INTERESTED');
 
-                  final isTest = WidgetsBinding.instance.runtimeType.toString().contains('TestWidgetsFlutterBinding');
-                  if (isTest) return;
+                  final addFn = widget.addInquiredUserFn ?? addInquiredUser;
+                  bool isMatch = await addFn(student.uid);
 
-                  bool isMatch = await addInquiredUser(student.uid);
 
                   if (isMatch) {
                       showDialog(
