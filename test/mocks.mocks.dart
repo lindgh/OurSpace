@@ -4,7 +4,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i7;
-import 'dart:typed_data' as _i9;
+import 'dart:typed_data' as _i11;
 
 import 'package:cloud_firestore/cloud_firestore.dart' as _i6;
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart'
@@ -14,11 +14,14 @@ import 'package:firebase_auth_platform_interface/firebase_auth_platform_interfac
     as _i3;
 import 'package:firebase_core/firebase_core.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i8;
-import 'package:OurSpace/services/auth/authentication.dart' as _i13;
-import 'package:OurSpace/services/auth/user.dart' as _i12;
-import 'package:OurSpace/services/chat/chat_services.dart' as _i11;
-import 'package:OurSpace/services/upload/add_data.dart' as _i10;
+import 'package:mockito/src/dummies.dart' as _i10;
+import 'package:OurSpace/models/student_card_model.dart' as _i16;
+import 'package:OurSpace/services/auth/authentication.dart' as _i14;
+import 'package:OurSpace/services/auth/user.dart' as _i9;
+import 'package:OurSpace/services/chat/chat_services.dart' as _i13;
+import 'package:OurSpace/services/matching/matching_algorithm.dart' as _i8;
+import 'package:OurSpace/services/matching/sort_student_cards.dart' as _i15;
+import 'package:OurSpace/services/upload/add_data.dart' as _i12;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -248,6 +251,27 @@ class _FakeAggregateQuery_19 extends _i1.SmartFake
 
 class _FakeFirebaseAuth_20 extends _i1.SmartFake implements _i4.FirebaseAuth {
   _FakeFirebaseAuth_20(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeMatchingAlgorithm_21 extends _i1.SmartFake
+    implements _i8.MatchingAlgorithm {
+  _FakeMatchingAlgorithm_21(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeUserData_22 extends _i1.SmartFake implements _i9.UserData {
+  _FakeUserData_22(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -728,7 +752,7 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
           #verifyPasswordResetCode,
           [code],
         ),
-        returnValue: _i7.Future<String>.value(_i8.dummyValue<String>(
+        returnValue: _i7.Future<String>.value(_i10.dummyValue<String>(
           this,
           Invocation.method(
             #verifyPasswordResetCode,
@@ -822,7 +846,7 @@ class MockUser extends _i1.Mock implements _i4.User {
   @override
   String get uid => (super.noSuchMethod(
         Invocation.getter(#uid),
-        returnValue: _i8.dummyValue<String>(
+        returnValue: _i10.dummyValue<String>(
           this,
           Invocation.getter(#uid),
         ),
@@ -1177,7 +1201,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
   @override
   String get databaseURL => (super.noSuchMethod(
         Invocation.getter(#databaseURL),
-        returnValue: _i8.dummyValue<String>(
+        returnValue: _i10.dummyValue<String>(
           this,
           Invocation.getter(#databaseURL),
         ),
@@ -1186,7 +1210,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
   @override
   String get databaseId => (super.noSuchMethod(
         Invocation.getter(#databaseId),
-        returnValue: _i8.dummyValue<String>(
+        returnValue: _i10.dummyValue<String>(
           this,
           Invocation.getter(#databaseId),
         ),
@@ -1298,7 +1322,7 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
       ) as _i7.Future<void>);
 
   @override
-  _i6.LoadBundleTask loadBundle(_i9.Uint8List? bundle) => (super.noSuchMethod(
+  _i6.LoadBundleTask loadBundle(_i11.Uint8List? bundle) => (super.noSuchMethod(
         Invocation.method(
           #loadBundle,
           [bundle],
@@ -1464,8 +1488,8 @@ class MockFirebaseFirestore extends _i1.Mock implements _i6.FirebaseFirestore {
             #maxAttempts: maxAttempts,
           },
         ),
-        returnValue: _i8.ifNotNull(
-              _i8.dummyValueOrNull<T>(
+        returnValue: _i10.ifNotNull(
+              _i10.dummyValueOrNull<T>(
                 this,
                 Invocation.method(
                   #runTransaction,
@@ -1553,7 +1577,7 @@ class MockDocumentSnapshot<T extends Object?> extends _i1.Mock
   @override
   String get id => (super.noSuchMethod(
         Invocation.getter(#id),
-        returnValue: _i8.dummyValue<String>(
+        returnValue: _i10.dummyValue<String>(
           this,
           Invocation.getter(#id),
         ),
@@ -1618,7 +1642,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
   @override
   String get id => (super.noSuchMethod(
         Invocation.getter(#id),
-        returnValue: _i8.dummyValue<String>(
+        returnValue: _i10.dummyValue<String>(
           this,
           Invocation.getter(#id),
         ),
@@ -1636,7 +1660,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
   @override
   String get path => (super.noSuchMethod(
         Invocation.getter(#path),
-        returnValue: _i8.dummyValue<String>(
+        returnValue: _i10.dummyValue<String>(
           this,
           Invocation.getter(#path),
         ),
@@ -1771,7 +1795,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
   @override
   String get id => (super.noSuchMethod(
         Invocation.getter(#id),
-        returnValue: _i8.dummyValue<String>(
+        returnValue: _i10.dummyValue<String>(
           this,
           Invocation.getter(#id),
         ),
@@ -1780,7 +1804,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
   @override
   String get path => (super.noSuchMethod(
         Invocation.getter(#path),
-        returnValue: _i8.dummyValue<String>(
+        returnValue: _i10.dummyValue<String>(
           this,
           Invocation.getter(#path),
         ),
@@ -2254,19 +2278,19 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
 /// A class which mocks [StoreData].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockStoreData extends _i1.Mock implements _i10.StoreData {
+class MockStoreData extends _i1.Mock implements _i12.StoreData {
   MockStoreData() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i7.Future<String> uploadImageToStorage(_i9.Uint8List? file) =>
+  _i7.Future<String> uploadImageToStorage(_i11.Uint8List? file) =>
       (super.noSuchMethod(
         Invocation.method(
           #uploadImageToStorage,
           [file],
         ),
-        returnValue: _i7.Future<String>.value(_i8.dummyValue<String>(
+        returnValue: _i7.Future<String>.value(_i10.dummyValue<String>(
           this,
           Invocation.method(
             #uploadImageToStorage,
@@ -2297,7 +2321,7 @@ class MockStoreData extends _i1.Mock implements _i10.StoreData {
             #imageURL: imageURL,
           },
         ),
-        returnValue: _i7.Future<String>.value(_i8.dummyValue<String>(
+        returnValue: _i7.Future<String>.value(_i10.dummyValue<String>(
           this,
           Invocation.method(
             #saveData,
@@ -2318,7 +2342,7 @@ class MockStoreData extends _i1.Mock implements _i10.StoreData {
 /// A class which mocks [ChatService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockChatService extends _i1.Mock implements _i11.ChatService {
+class MockChatService extends _i1.Mock implements _i13.ChatService {
   MockChatService() {
     _i1.throwOnMissingStub(this);
   }
@@ -2355,7 +2379,7 @@ class MockChatService extends _i1.Mock implements _i11.ChatService {
   _i7.Future<void> sendMessage(
     String? receiverID,
     dynamic message, {
-    _i7.Future<_i12.UserData?> Function()? fetchUser,
+    _i7.Future<_i9.UserData?> Function()? fetchUser,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -2390,7 +2414,7 @@ class MockChatService extends _i1.Mock implements _i11.ChatService {
 /// A class which mocks [authentication].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class Mockauthentication extends _i1.Mock implements _i13.authentication {
+class Mockauthentication extends _i1.Mock implements _i14.authentication {
   Mockauthentication() {
     _i1.throwOnMissingStub(this);
   }
@@ -2948,7 +2972,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   @override
   String get id => (super.noSuchMethod(
         Invocation.getter(#id),
-        returnValue: _i8.dummyValue<String>(
+        returnValue: _i10.dummyValue<String>(
           this,
           Invocation.getter(#id),
         ),
@@ -2984,7 +3008,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
           #data,
           [],
         ),
-        returnValue: _i8.dummyValue<T>(
+        returnValue: _i10.dummyValue<T>(
           this,
           Invocation.method(
             #data,
@@ -3004,4 +3028,62 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
         #[],
         [field],
       ));
+}
+
+/// A class which mocks [SortStudentCards].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSortStudentCards extends _i1.Mock implements _i15.SortStudentCards {
+  MockSortStudentCards() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i8.MatchingAlgorithm get match => (super.noSuchMethod(
+        Invocation.getter(#match),
+        returnValue: _FakeMatchingAlgorithm_21(
+          this,
+          Invocation.getter(#match),
+        ),
+      ) as _i8.MatchingAlgorithm);
+
+  @override
+  _i7.Future<List<_i16.StudentCard>> sort(List<_i16.StudentCard>? cards) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #sort,
+          [cards],
+        ),
+        returnValue:
+            _i7.Future<List<_i16.StudentCard>>.value(<_i16.StudentCard>[]),
+      ) as _i7.Future<List<_i16.StudentCard>>);
+}
+
+/// A class which mocks [DefaultMatchingAlgorithm].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDefaultMatchingAlgorithm extends _i1.Mock
+    implements _i8.DefaultMatchingAlgorithm {
+  MockDefaultMatchingAlgorithm() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i9.UserData get currUser => (super.noSuchMethod(
+        Invocation.getter(#currUser),
+        returnValue: _FakeUserData_22(
+          this,
+          Invocation.getter(#currUser),
+        ),
+      ) as _i9.UserData);
+
+  @override
+  _i7.Future<int> calculateScore(_i16.StudentCard? otherUser) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #calculateScore,
+          [otherUser],
+        ),
+        returnValue: _i7.Future<int>.value(0),
+      ) as _i7.Future<int>);
 }

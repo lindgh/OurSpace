@@ -3,16 +3,18 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import '../models/student_card_widget.dart';
 import '../models/student_card_data.dart';
 import '../models/student_card_model.dart';
-import '../services/matching/matchingAlgorithm.dart';
+import '../services/auth/user.dart';
+import '../services/matching/matching_algorithm.dart';
+import '../services/matching/sort_student_cards.dart';
 
 class DiscoverPage extends StatefulWidget {
-  final Future<List<StudentCard>> Function()? getAllUserDataFunc;
-  final Future<List<StudentCard>> Function(List<StudentCard>)? sortFunc;
+  // final Future<List<StudentCard>> Function()? getAllUserDataFunc;
+  // final Future<List<StudentCard>> Function(List<StudentCard>)? sortFunc;
 
   DiscoverPage({
     super.key,
-    this.getAllUserDataFunc,
-    this.sortFunc,
+    // this.getAllUserDataFunc,
+    // this.sortFunc,
   });
 
   static route() => MaterialPageRoute(
@@ -33,9 +35,12 @@ class _DiscoverPageState extends State<DiscoverPage> {
   }
 
   Future<void> loadUserData() async {
-    final othersList = await (widget.getAllUserDataFunc?.call() ?? getAllUserData());
-    _currentCards = await (widget.sortFunc?.call(othersList) ??
-        MatchingAlgorithm.sortedStudents(otherUsers: othersList));
+    final currUser = await UserData.fetchCurrentUser();
+    final othersList = await getAllUserData();
+    final matching = DefaultMatchingAlgorithm(currUser: currUser!);
+    final sortedList = SortStudentCards(match: matching);
+
+    _currentCards = await  sortedList.sort(othersList);
     setState(() {});
   }
 
