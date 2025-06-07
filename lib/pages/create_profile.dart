@@ -49,7 +49,7 @@ class CreateProfilePageState extends State<CreateProfilePage> {
     String newImageURL = 'https://i.imgur.com/aNPydA6.png'; //this is default pfp
 
     if (userImage != null) {
-      String newImageURL = await StoreData().uploadImageToStorage(userImage!);
+      newImageURL = await StoreData().uploadImageToStorage(userImage!);
     }
 
     String response = await StoreData().saveData(
