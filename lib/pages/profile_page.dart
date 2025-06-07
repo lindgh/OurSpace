@@ -16,9 +16,12 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class ProfilePage extends StatefulWidget {
+  final VoidCallback? onLogout;
+  const ProfilePage({super.key, this.onLogout});
   @override
-    _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
+
 
 class _ProfilePageState extends State<ProfilePage> {
   final Stream<DocumentSnapshot<Map<String, dynamic>>> documentStream = _firestore
@@ -318,7 +321,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               child: Container(
                                 width: 350.0,
-                                height: 160.0,
+                                height: 130.0,
 
                                 child: Center(
                                   child: Column(
@@ -398,8 +401,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           onPressed: () {
-                            signOut(context);
+                            if (widget.onLogout != null) {
+                              widget.onLogout!(); //fake for testing
+                            } else {
+                              signOut(context); //real one
+                            }
                           },
+
                           child: const Text('Logout',
                             style: TextStyle(
                               color: Colors.white,
